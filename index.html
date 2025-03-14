@@ -12,7 +12,7 @@
 <body>
     <div class="container">
         <div class="left-column">
-            <img src="Kelvin" alt="Profile Picture" class="profile-img">
+            <img src="Capture.PNG" alt="Profile Picture" class="profile-img">
             <h1>Kelvin</h1>
             <p>Web Developer | JavaScript Expert</p>
             <div class="section">
@@ -40,33 +40,111 @@
             </div>
             <div class="section">
                 <h2>Skills</h2>
-                <div class="skill-bars">
-                    <p>HTML</p>
-                    <div class="circle-progress" data-progress="90"></div>
-                    <p>CSS</p>
-                    <div class="circle-progress" data-progress="85"></div>
-                    <p>JavaScript</p>
-                    <div class="circle-progress" data-progress="80"></div>
-                    <p>React</p>
-                    <div class="circle-progress" data-progress="75"></div>
-                    <p>Responsive Design</p>
-                    <div class="circle-progress" data-progress="70"></div>
+                <div class="skills-grid">
+                    <!-- Each skill is displayed in a 4-column layout with percentage progress -->
+                    <div class="skill-item">
+                        <p>Artificial Intelligence (AI) <span>90%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>GitHub <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>FinTech <span>85%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Google Docs <span>95%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Google Apps Script <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Desktop Application Development <span>75%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Object-Oriented Programming (OOP) <span>90%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>CSS <span>85%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Back-End Web Development <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Front-End Development <span>85%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>PhpMyAdmin <span>70%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>MySQL <span>85%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Databases <span>90%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>IT Integration <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>API Development <span>90%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Software Project Management <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Software Research <span>75%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Time Management <span>90%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Software Design <span>85%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>System Deployment <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Web Development <span>85%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>AJAX <span>75%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>PHP <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>JavaScript <span>90%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Software Development <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>.NET Core <span>75%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>ASP.NET Web API <span>70%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Active Server Pages (ASP) <span>60%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>Web Applications <span>85%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>ASP.NET Core <span>80%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>.NET Framework <span>75%</span></p>
+                    </div>
+                    <div class="skill-item">
+                        <p>ASP.NET <span>70%</span></p>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 
     <script>
-        // Circle Progress Bars
-        document.querySelectorAll('.circle-progress').forEach(function (circle) {
-            let progress = circle.getAttribute('data-progress');
-            let radius = circle.r.baseVal.value;
-            let circumference = 2 * Math.PI * radius;
-            let offset = circumference - (progress / 100) * circumference;
-
-            circle.style.strokeDasharray = circumference;
-            circle.style.strokeDashoffset = offset;
-        });
+        // You can add any custom JavaScript functionality here if needed.
     </script>
 </body>
 
