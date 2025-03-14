@@ -11,86 +11,106 @@
             margin: 0;
             padding: 0;
             background-color: #f4f4f4;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
         }
         .container {
-            max-width: 800px;
-            margin: 20px auto;
+            width: 90%;
+            max-width: 1000px;
+            display: flex;
             background: white;
-            padding: 20px;
             box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
             border-radius: 10px;
+            overflow: hidden;
         }
-        .profile {
+        .left-column {
+            width: 35%;
+            background: #007bff;
+            color: white;
+            padding: 20px;
             text-align: center;
         }
-        .profile img {
+        .left-column img {
             width: 120px;
             border-radius: 50%;
         }
-        h1, h2 {
-            text-align: center;
+        .right-column {
+            width: 65%;
+            padding: 20px;
         }
         .section {
             margin-bottom: 20px;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
         }
-        .contact-info, .skills {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-around;
-        }
-        .skill {
-            background: #007bff;
-            color: white;
-            padding: 5px 10px;
+        .skills .skill-bar {
+            background: #ddd;
+            height: 10px;
             border-radius: 5px;
-            margin: 5px;
+            overflow: hidden;
+            margin-top: 5px;
         }
-        @media (max-width: 600px) {
+        .skills .skill-bar div {
+            height: 100%;
+            background: #007bff;
+        }
+        .contact-info {
+            display: flex;
+            flex-direction: column;
+        }
+        .contact-info p {
+            margin: 5px 0;
+        }
+        @media (max-width: 768px) {
             .container {
-                padding: 15px;
-            }
-            .contact-info, .skills {
                 flex-direction: column;
-                align-items: center;
+            }
+            .left-column, .right-column {
+                width: 100%;
             }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <div class="profile">
+        <div class="left-column">
             <img src="profile.jpg" alt="Profile Picture">
             <h1>Kelvin</h1>
             <p>Web Developer | JavaScript Expert</p>
-        </div>
-        
-        <div class="section">
-            <h2>Summary</h2>
-            <p>Experienced web developer specializing in front-end technologies. Passionate about creating responsive and user-friendly designs.</p>
-        </div>
-        
-        <div class="section">
-            <h2>Work Experience</h2>
-            <p><strong>Software Engineer - ABC Tech</strong> (2020-Present)</p>
-            <p>Developed interactive web applications using JavaScript, React, and CSS frameworks.</p>
-        </div>
-        
-        <div class="section">
-            <h2>Skills</h2>
-            <div class="skills">
-                <div class="skill">HTML</div>
-                <div class="skill">CSS</div>
-                <div class="skill">JavaScript</div>
-                <div class="skill">React</div>
-                <div class="skill">Responsive Design</div>
+            <div class="section">
+                <h2>Contact</h2>
+                <div class="contact-info">
+                    <p><i class="fas fa-envelope"></i> kelvin.net6@gmai.com</p>
+                    <p><i class="fas fa-phone"></i> +27672911605</p>
+                </div>
             </div>
         </div>
-        
-        <div class="section">
-            <h2>Contact</h2>
-            <div class="contact-info">
-                <p><i class="fas fa-envelope"></i> Email: kelvin.net6@gmai.com</p>
-                <p><i class="fas fa-phone"></i> Phone: +27672911605</p>
+        <div class="right-column">
+            <div class="section">
+                <h2>Summary</h2>
+                <p>Experienced web developer specializing in front-end technologies. Passionate about creating responsive and user-friendly designs.</p>
+            </div>
+            <div class="section">
+                <h2>Work Experience</h2>
+                <p><strong>Software Engineer - ABC Tech</strong> (2020-Present)</p>
+                <p>Developed interactive web applications using JavaScript, React, and CSS frameworks.</p>
+            </div>
+            <div class="section">
+                <h2>Skills</h2>
+                <div class="skills">
+                    <p>HTML</p>
+                    <div class="skill-bar"><div style="width: 90%"></div></div>
+                    <p>CSS</p>
+                    <div class="skill-bar"><div style="width: 85%"></div></div>
+                    <p>JavaScript</p>
+                    <div class="skill-bar"><div style="width: 80%"></div></div>
+                    <p>React</p>
+                    <div class="skill-bar"><div style="width: 75%"></div></div>
+                    <p>Responsive Design</p>
+                    <div class="skill-bar"><div style="width: 70%"></div></div>
+                </div>
             </div>
         </div>
     </div>
