@@ -96,6 +96,23 @@ body {
     color: #007bff;
     font-size: 14px;
 }
+/* Social Media Links Styling */
+.social-links {
+    margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+.social-icon {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    color: #ffcc00; /* Change to the color of your choice */
+}
 
 /* Responsive Design */
 @media (max-width: 768px) {
