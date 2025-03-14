@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Digital Resume</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4;
+        }
+        .container {
+            max-width: 800px;
+            margin: 20px auto;
+            background: white;
+            padding: 20px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+        }
+        .profile {
+            text-align: center;
+        }
+        .profile img {
+            width: 120px;
+            border-radius: 50%;
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .section {
+            margin-bottom: 20px;
+        }
+        .contact-info, .skills {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-around;
+        }
+        .skill {
+            background: #007bff;
+            color: white;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin: 5px;
+        }
+        @media (max-width: 600px) {
+            .container {
+                padding: 15px;
+            }
+            .contact-info, .skills {
+                flex-direction: column;
+                align-items: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="profile">
+            <img src="profile.jpg" alt="Profile Picture">
+            <h1>Kelvin</h1>
+            <p>Web Developer | JavaScript Expert</p>
+        </div>
+        
+        <div class="section">
+            <h2>Summary</h2>
+            <p>Experienced web developer specializing in front-end technologies. Passionate about creating responsive and user-friendly designs.</p>
+        </div>
+        
+        <div class="section">
+            <h2>Work Experience</h2>
+            <p><strong>Software Engineer - ABC Tech</strong> (2020-Present)</p>
+            <p>Developed interactive web applications using JavaScript, React, and CSS frameworks.</p>
+        </div>
+        
+        <div class="section">
+            <h2>Skills</h2>
+            <div class="skills">
+                <div class="skill">HTML</div>
+                <div class="skill">CSS</div>
+                <div class="skill">JavaScript</div>
+                <div class="skill">React</div>
+                <div class="skill">Responsive Design</div>
+            </div>
+        </div>
+        
+        <div class="section">
+            <h2>Contact</h2>
+            <div class="contact-info">
+                <p><i class="fas fa-envelope"></i> Email: kelvin.net6@gmai.com</p>
+                <p><i class="fas fa-phone"></i> Phone: +27672911605</p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
