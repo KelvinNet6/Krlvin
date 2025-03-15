@@ -166,8 +166,12 @@ body {
 .navbar {
     background-color: #333;
     padding: 10px;
-    margin-bottom: 20px;
+    margin: 0; 
+    width: 100%; 
     border-radius: 5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
 }
 
 .navbar ul {
@@ -175,7 +179,7 @@ body {
     margin: 0;
     padding: 0;
     display: flex;
-    justify-content: space-around;
+    gap: 20px;  
 }
 
 .navbar ul li {
@@ -192,4 +196,11 @@ body {
 
 .navbar ul li a:hover {
     background-color: #555;
+}
+
+/* Laptop Icon */
+.navbar-icon {
+    color: white;
+    font-size: 28px;
+    margin-left: 20px;
 }
