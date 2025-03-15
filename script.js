@@ -1,4 +1,3 @@
-<script>
 document.addEventListener("DOMContentLoaded", function () {
     const progressCircles = document.querySelectorAll(".progress-circle");
 
@@ -11,4 +10,3 @@ document.addEventListener("DOMContentLoaded", function () {
         circle.querySelector("span").innerText = percentage + "%";
     });
 });
-</script>
