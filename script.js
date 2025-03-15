@@ -10,3 +10,11 @@ document.addEventListener("DOMContentLoaded", function () {
         circle.querySelector("span").innerText = percentage + "%";
     });
 });
+const modal = document.getElementById("modules-modal");
+const modulesLink = document.getElementById("modules-link");
+modulesLink.onclick = function() {
+    modal.style.bottom = "0"; 
+};
+function closeModal() {
+    modal.style.bottom = "-100%"; 
+}
