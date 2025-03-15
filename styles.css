@@ -208,8 +208,8 @@ body {
 .modules-modal {
     position: fixed;
     bottom: -100%;  
-    left: 32%; 
-    width: 68%;
+    left: 30%; 
+    width: 70%;
     height: 100%;
     background-color: rgba(0, 0, 0, 0.5);  
     display: flex;
