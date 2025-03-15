@@ -21,23 +21,51 @@ body {
     overflow: hidden;
 }
 
+/* Left Column */
 .left-column {
-    width: 25%;
+    width: 30%;
     background: #007bff;
     color: white;
     padding: 20px;
     text-align: center;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .left-column img {
-    width: 150px;
-    height: 150px;
+    width: 120px;
+    height: 120px;
     border-radius: 50%;
     object-fit: cover;
+    margin-bottom: 15px;
 }
 
+.section {
+    width: 100%;
+    margin-top: 20px;
+}
+
+.social-links {
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+    margin-top: 10px;
+}
+
+.social-icon {
+    color: white;
+    font-size: 24px;
+    text-decoration: none;
+}
+
+.social-icon:hover {
+    color: #ffcc00;
+}
+
+/* Right Column */
 .right-column {
-    width: 75%;
+    width: 70%;
     padding: 20px;
     overflow-y: auto;
 }
@@ -48,32 +76,12 @@ body {
     padding-bottom: 10px;
 }
 
-.contact-info {
-    display: flex;
-    flex-direction: column;
-}
-
-.contact-info p {
-    margin: 5px 0;
-}
-
-.social-links a {
-    margin: 10px;
-    color: white;
-    font-size: 20px;
-    text-decoration: none;
-}
-
-.social-links a:hover {
-    color: #ffcc00;
-}
-
-/* Skills Grid Layout */
+/* Skills Grid */
 .skills-grid {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
-    gap: 20px;
-    padding-top: 20px;
+    gap: 10px;
+    padding-top: 10px;
 }
 
 .skill-item {
@@ -81,37 +89,28 @@ body {
     padding: 10px;
     border-radius: 5px;
     text-align: center;
+    font-size: 14px;
+    font-weight: bold;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
-.skill-item p {
-    margin: 0;
-    font-weight: bold;
+/* Certificate Button */
+.cert-btn {
+    background: #ffcc00;
+    border: none;
+    padding: 10px;
+    width: 100%;
+    color: #333;
     font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    margin-top: 10px;
+    border-radius: 5px;
+    transition: background 0.3s ease;
 }
 
-.skill-item span {
-    display: block;
-    margin-top: 5px;
-    color: #007bff;
-    font-size: 14px;
-}
-/* Social Media Links Styling */
-.social-links {
-    margin-top: 20px;
-    display: flex;
-    justify-content: center;
-    gap: 15px;
-}
-
-.social-icon {
-    color: white;
-    font-size: 24px;
-    text-decoration: none;
-}
-
-.social-icon:hover {
-    color: #ffcc00; /* Change to the color of your choice */
+.cert-btn:hover {
+    background: #e6b800;
 }
 
 /* Responsive Design */
@@ -119,7 +118,15 @@ body {
     .container {
         flex-direction: column;
     }
-    .left-column, .right-column {
+
+    .left-column, 
+    .right-column {
         width: 100%;
+        text-align: center;
+    }
+
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
     }
 }
+
