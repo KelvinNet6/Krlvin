@@ -116,7 +116,7 @@ body {
 
 .progress-circle p {
     position: absolute;
-    bottom: -30px;
+    bottom: 5px;
     font-size: 14px;
     font-weight: bold;
     color: white;
