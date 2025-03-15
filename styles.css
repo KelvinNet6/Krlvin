@@ -208,13 +208,13 @@ body {
 .modules-modal {
     position: fixed;
     bottom: -100%;  /* Start off the screen */
-    left: 0;
-    width: 100%;
+    left: 30%; /* Start modal from 30% of the screen width to make it 70% wide */
+    width: 70%; /* Modal takes 70% width of the screen */
     height: 100%;
     background-color: rgba(0, 0, 0, 0.8);  /* Dark background */
     display: flex;
-    justify-content: center;
-    align-items: center;
+    justify-content: flex-end; /* Align modal to the right side */
+    align-items: flex-end;
     transition: bottom 0.3s ease-in-out;  /* Slide-up animation */
 }
 
@@ -222,9 +222,9 @@ body {
     background-color: white;
     padding: 30px;
     border-radius: 10px;
-    width: 80%;
-    max-width: 600px;
-    text-align: center;
+    width: 100%; /* Take full width of the modal container */
+    height: calc(100% - 20px);  /* Modal takes the full height of the right column */
+    overflow-y: auto; /* Allows scrolling if content exceeds height */
     position: relative;
 }
 
