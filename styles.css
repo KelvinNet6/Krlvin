@@ -207,25 +207,25 @@ body {
 /* Modal Style */
 .modules-modal {
     position: fixed;
-    bottom: -100%;  /* Start off the screen */
-    left: 30%; /* Start modal from 30% of the screen width to make it 70% wide */
-    width: 70%; /* Modal takes 70% width of the screen */
+    bottom: -100%;  
+    left: 32%; 
+    width: 68%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5);  /* Semi-transparent background */
+    background-color: rgba(0, 0, 0, 0.5);  
     display: flex;
-    justify-content: flex-end; /* Align modal to the right side */
-    align-items: flex-start;  /* Start from the top of the right column */
-    transition: bottom 0.3s ease-in-out;  /* Slide-up animation */
-    z-index: 1000; /* Ensure the modal appears on top of other content */
+    justify-content: flex-end; 
+    align-items: flex-start;  
+    transition: bottom 0.3s ease-in-out;  
+    z-index: 1000;
 }
 
 .modal-content {
-    background-color: rgba(255, 255, 255, 0.9); /* Slightly transparent background */
+    background-color: rgba(255, 255, 255, 0.9); 
     padding: 30px;
     border-radius: 10px;
-    width: 100%; /* Take full width of the modal container */
-    height: calc(100% - 20px);  /* Modal takes the full height of the right column */
-    overflow-y: auto; /* Allows scrolling if content exceeds height */
+    width: 100%; 
+    height: calc(100% - 20px);  
+    overflow-y: auto; 
     position: relative;
 }
 
@@ -238,7 +238,7 @@ body {
     background-color: transparent;
     border: none;
     cursor: pointer;
-    z-index: 1100; /* Ensure the close button stays on top */
+    z-index: 1100; 
 }
 
 .close-btn:hover {
@@ -259,7 +259,6 @@ body {
     font-size: 18px;
 }
 
-/* Style for the Module link in navbar */
 #modules-link {
     cursor: pointer;
 }
