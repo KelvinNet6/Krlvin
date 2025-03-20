@@ -1,3 +1,4 @@
+
 /* General Styles */
 body {
     font-family: Arial, sans-serif;
@@ -298,6 +299,7 @@ body {
     border: none;
     cursor: pointer;
     z-index: 1100; 
+    padding-left: 400px;
 }
 
 .close-btn:hover {
