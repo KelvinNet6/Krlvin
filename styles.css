@@ -299,7 +299,7 @@ body {
     border: none;
     cursor: pointer;
     z-index: 1100; 
-    padding-left: 400px;
+    padding-left: 1200px;
 }
 
 .close-btn:hover {
