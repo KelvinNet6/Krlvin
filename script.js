@@ -2,12 +2,21 @@ document.addEventListener("DOMContentLoaded", function () {
     const progressCircles = document.querySelectorAll(".progress-circle");
 
     progressCircles.forEach(circle => {
-        let percentage = circle.getAttribute("data-percentage");
-        let angle = (percentage / 100) * 360;
-
-        let gradient = `conic-gradient(#007bff ${angle}deg, #ccc ${angle}deg)`;
-        circle.style.background = gradient;
-        circle.querySelector("span").innerText = percentage + "%";
+        const targetPercentage = parseInt(circle.getAttribute("data-percentage"));
+        let currentPercentage = 0;
+        
+        const animate = () => {
+            if (currentPercentage < targetPercentage) {
+                currentPercentage++;
+                let angle = (currentPercentage / 100) * 360;
+                let gradient = `conic-gradient(#007bff ${angle}deg, #ccc ${angle}deg)`;
+                circle.style.background = gradient;
+                circle.querySelector("span").innerText = currentPercentage + "%";
+                requestAnimationFrame(animate);
+            }
+        };
+        
+        animate();
     });
 });
 
