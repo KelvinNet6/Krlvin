@@ -1,4 +1,11 @@
 document.addEventListener("DOMContentLoaded", function () {
+    // Animate language bars
+    document.querySelectorAll('.language-bar').forEach(bar => {
+        const level = bar.getAttribute('data-level');
+        setTimeout(() => {
+            bar.style.setProperty('--width', `${level}%`);
+        }, 200);
+    });
     const progressCircles = document.querySelectorAll(".progress-circle");
 
     progressCircles.forEach(circle => {
