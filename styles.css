@@ -152,15 +152,32 @@ body {
 }
 
 @media (max-width: 768px) {
+    body {
+        height: auto;
+        overflow-y: auto;
+    }
     .container {
         flex-direction: column;
+        height: auto;
+        overflow: visible;
     }
     .left-column, .right-column {
         width: 100%;
+        overflow: visible;
+    }
+    .right-column {
+        padding: 20px;
     }
     .progress-container {
         flex-direction: column;
         align-items: center;
+    }
+    .skills-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+    .modules-modal {
+        left: 0;
+        width: 100%;
     }
 }
 /* Navbar Style */
