@@ -203,18 +203,21 @@ body {
     body {
         height: auto;
         overflow-y: auto;
+        padding: 10px;
     }
     .container {
         flex-direction: column;
         height: auto;
         overflow: visible;
+        max-width: 100%;
     }
     .left-column, .right-column {
         width: 100%;
         overflow: visible;
+        padding: 15px;
     }
     .right-column {
-        padding: 20px;
+        padding: 15px;
     }
     .progress-container {
         flex-direction: column;
@@ -222,10 +225,35 @@ body {
     }
     .skills-grid {
         grid-template-columns: repeat(2, 1fr);
+        gap: 10px;
+    }
+    .skill-item {
+        padding: 8px;
+        font-size: 14px;
+    }
+    .skill-item p {
+        font-size: 14px;
     }
     .modules-modal {
         left: 0;
         width: 100%;
+    }
+    .navbar {
+        padding: 8px;
+    }
+    .navbar ul li a {
+        font-size: 16px;
+        padding: 8px 12px;
+    }
+    .modal-content {
+        padding: 15px;
+    }
+    .module-list li {
+        font-size: 16px;
+    }
+    .section {
+        margin-bottom: 15px;
+        padding-bottom: 8px;
     }
 }
 /* Navbar Style */
