@@ -41,6 +41,9 @@ body {
     width: 70%;
     padding: 20px;
     overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    border-left: 1px solid #ddd;
 }
 
 .section {
@@ -173,9 +176,11 @@ body {
 
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     gap: 20px;
     padding-top: 20px;
+    width: 100%;
+    margin-bottom: 20px;
 }
 
 .skill-item {
@@ -294,12 +299,15 @@ body {
 .navbar {
     background-color: #333;
     padding: 10px;
-    margin: 0; 
-    width: 100%; 
+    margin: 0 0 20px 0; 
+    width: calc(100% - 20px);
     border-radius: 5px;
     display: flex;
     justify-content: space-between;
     align-items: center;
+    position: sticky;
+    top: 0;
+    z-index: 100;
 }
 
 .navbar ul {
