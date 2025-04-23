@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
         let percentage = circle.getAttribute("data-percentage");
         let angle = (percentage / 100) * 360;
 
-        let gradient = `conic-gradient(#ffcc00 ${angle}deg, #ccc ${angle}deg)`;
+        let gradient = `conic-gradient(#007bff ${angle}deg, #ccc ${angle}deg)`;
         circle.style.background = gradient;
         circle.querySelector("span").innerText = percentage + "%";
     });
