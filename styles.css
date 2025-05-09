@@ -434,7 +434,8 @@ body {
     border: none;
     cursor: pointer;
     z-index: 1100; 
-    padding-left: 12px;
+    padding-left: 5px;
+    padding-right: 5px;
     border-radius: 50px;
 }
 
