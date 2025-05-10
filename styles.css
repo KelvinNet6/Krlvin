@@ -328,6 +328,7 @@ body {
     font-size: 18px;
     padding: 10px 15px;
     border-radius: 5px;
+    background-color: #555;
 }
 
 .navbar ul li a:hover {
