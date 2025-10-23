@@ -1,262 +1,265 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Krlvin</title>
-   <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" rel="stylesheet">
+    <title>Kelvin Kadzenje | Full-Stack Software Developer</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-    <div class="container">
-        <div class="left-column">
-            <img src="Kelvin.jpg" alt="Profile Picture" class="profile-img">
-            <h1>Kelvin Kadzenje</h1>
-            <p>Software Developer</p>
-            <div class="section">
-                <div class="contact-info">
-                    <div class="social-links">
-                        <a href="mailto:kelvin.net6@gmail.com" class="social-icon"><i class="fas fa-envelope"></i></a>
+    <!-- Header with Background Video -->
+    <header class="hero-header">
+        <nav class="navbar">
+            <div class="nav-container">
+                <div class="nav-logo">
+                    <h3>Kelvin Kadzenje</h3>
+                </div>
+                <ul class="nav-menu">
+                    <li><a href="#home" class="nav-link active">Home</a></li>
+                    <li><a href="#about" class="nav-link">About</a></li>
+                    <li><a href="#projects" class="nav-link">Projects</a></li>
+                    <li><a href="#skills" class="nav-link">Skills</a></li>
+                    <li><a href="#experience" class="nav-link">Experience</a></li>
+                    <li><a href="#contact" class="nav-link">Contact</a></li>
+                </ul>
+                <div class="hamburger">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </div>
+            </div>
+        </nav>
+
+        <div class="hero-content">
+            <div class="hero-text">
+                <h1 class="hero-title">Kelvin Kadzenje</h1>
+                <h2 class="hero-subtitle">Full-Stack Software Developer</h2>
+                <p class="hero-description">
+                    Crafting scalable web applications with JavaScript, C#, and modern technologies
+                </p>
+                <div class="hero-buttons">
+                    <a href="#projects" class="btn btn-primary">View Projects</a>
+                    <a href="#contact" class="btn btn-secondary">Contact Me</a>
+                </div>
+            </div>
+            <div class="hero-image">
+                <img src="Kelvin.jpg" alt="Kelvin Kadzenje" class="profile-img">
+            </div>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <!-- About Section -->
+        <section id="about" class="section about">
+            <div class="container">
+                <h2 class="section-title">About Me</h2>
+                <div class="about-grid">
+                    <div class="about-text">
+                        <p>Experienced Software Developer with a strong specialization in JavaScript, C#, and full-stack development. Proficient in HTML, CSS, PHP, ASP.NET, and database management with PostgreSQL and MySQL. Passionate about creating user-centric, scalable applications and staying ahead in the ever-evolving IT landscape.</p>
+                        <div class="soft-skills">
+                            <h3>Soft Skills</h3>
+                            <div class="skills-progress">
+                                <div class="skill-item">
+                                    <span>Problem Solving</span>
+                                    <div class="progress-bar" data-width="95"></div>
+                                </div>
+                                <div class="skill-item">
+                                    <span>Team Collaboration</span>
+                                    <div class="progress-bar" data-width="90"></div>
+                                </div>
+                                <div class="skill-item">
+                                    <span>Adaptability</span>
+                                    <div class="progress-bar" data-width="85"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="about-stats">
+                        <div class="stat-item">
+                            <h3>85%</h3>
+                            <p>Technical Skills</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>70+</h3>
+                            <p>Projects Completed</p>
+                        </div>
+                        <div class="stat-item">
+                            <h3>5+</h3>
+                            <p>Years Experience</p>
+                        </div>
                     </div>
                 </div>
             </div>
-           <div class="section">
-    <h2>SoftSkills</h2>
-    <div class="languages">
-        <div class="language-item">
-            <span>ProblemSolving</span>
-            <div class="language-bar" data-level="95"></div>
-        </div>
-        <div class="language-item">
-            <span>TeamCollaboration</span>
-            <div class="language-bar" data-level="90"></div>
-        </div>
-        <div class="language-item">
-            <span>Adaptability</span>
-            <div class="language-bar" data-level="80"></div>
-            </div>
-          </div>
-      </div>
-            <div class="section">
-                <h2>DeveloperOverview</h2>
-              <div class="progress-container">
-                     <div class="progress-circle" data-percentage="85">
-                     <span></span>
-                     <p>Technical <br>Skills</p>
-                         <br>
-                   </div>
-                  <br>
-                   <div class="progress-circle" data-percentage="70">
-                      <span></span>
-                      <p>Project Experience</p>
-                       <br>
-                   </div>
-                  <br>
-                  <div class="progress-circle" data-percentage="80">
-                      <span></span>
-                      <p>Tooling & Platforms</p>
-                       <br>
-                   </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="section projects">
+            <div class="container">
+                <h2 class="section-title">Featured Projects</h2>
+                <div class="projects-grid">
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://via.placeholder.com/400x250/2563eb/ffffff?text=Mobile+CarWash" alt="Mobile CarWash">
+                        </div>
+                        <div class="project-content">
+                            <h3>Mobile CarWash Website</h3>
+                            <p>Modern, responsive website for mobile car washing service with booking system.</p>
+                            <div class="project-tech">
+                                <span>HTML</span>
+                                <span>CSS</span>
+                                <span>JavaScript</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://mrbamsmobilecarwash.com/" target="_blank" class="btn btn-sm">Live Demo</a>
+                                <a href="#" class="btn btn-sm btn-outline">View Code</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="project-card">
+                        <div class="project-image">
+                            <img src="https://via.placeholder.com/400x250/667eea/ffffff?text=LearningTreasury" alt="LearningTreasury">
+                        </div>
+                        <div class="project-content">
+                            <h3>LearningTreasury</h3>
+                            <p>Educational platform with interactive courses and progress tracking.</p>
+                            <div class="project-tech">
+                                <span>React</span>
+                                <span>Node.js</span>
+                                <span>PostgreSQL</span>
+                            </div>
+                            <div class="project-links">
+                                <a href="https://learningtreasury.org" target="_blank" class="btn btn-sm">Live Demo</a>
+                                <a href="#" class="btn btn-sm btn-outline">View Code</a>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div class="right-column">
-    <!-- Navigation Bar -->
-    <div class="navbar">
-        <ul>
-            <li><a href="javascript:void(0)" id="modules-link">Referencial Projects</a></li>
-        </ul>
-        <!-- Laptop with Code Icon -->
-        <i class="fas fa-laptop-code navbar-icon"></i>
-    </div>
-<!-- Sliding Modal -->
-<div id="modules-modal" class="modules-modal">
-    <div class="modal-content">
-        <span class="close-btn" onclick="closeModal()">&times;</span>
-        <h1>Referencial Projects</h1>
-        <p>Outlined Below are the Web Project which have Successfully Developed and Deployed.</p>
-       <ul class="module-list">
-    <li><a href="https://mrbamsmobilecarwash.com/" target="_blank">Mobile CarWash Website</a></li>
-    <li><a href="https://learningtreasury.org" target="_blank">LearningTreasury</a></li>
-</ul>
-        <!-- Video Section -->
-        <div class="video-container">
-            <video class="background-video" autoplay loop muted>
-                <source src="5495781-uhd_2560_1080_30fps.mp4" type="video/mp4">
-                Your browser does not support the video tag.
-            </video>
-        </div>
-    </div>
-</div>
-            <div class="section">
-                <h2>Summary</h2>
-                <p>Experienced Software Developer with a strong specialization in JavaScript, C#, and full-stack development, including responsive front-end design and robust back-end architecture. Proficient in a wide range of technologies, including HTML, CSS, C#, PHP, ASP.NET, and JavaScript, with a proven track record of delivering user-centric, scalable applications. Committed to continuous learning and the integration of emerging technologies in a fast-paced, ever-evolving IT landscape.</p>
-            </div> 
-        <div class="section">
-    <h2>Work Experience</h2>
+        </section>
 
-    <p><strong>Software Developer</strong></p>
-    <p>Developed interactive web applications using JavaScript, C#, PHP, ASP.NET, CSS, .NET Framework, and more. Skilled in developing scalable and responsive software programs based on user requirements.</p>
-
-    <p><strong>Web Hosting Specialist</strong></p>
-    <p>Managed and configured web hosting environments, including domain setup, server optimization, and security hardening. Ensured uptime and performance across shared, VPS, and cloud-based hosting platforms.</p>
-
-    <p><strong>Database Developer</strong></p>
-    <p>Designed, developed, and maintained PostgreSQL databases with features including authentication, instant APIs, Edge Functions, real-time subscriptions, storage, and vector embeddings. Optimized queries, implemented stored procedures, and ensured data integrity and performance for enterprise applications. Also utilized MySQL for data management.</p>
-
-    <p><strong>API Developer & IT Integration Specialist</strong></p>
-    <p>Built and maintained RESTful APIs and integrated third-party services for seamless system interoperability. Performed end-to-end API testing, IT system integrations, improving data flow and operational efficiency across platforms.</p>
-
-    <p><strong>Cloud Computing Specialist</strong></p>
-    <p>Worked with cloud platforms like Google Cloud to deploy and manage scalable applications and services. Expertise in infrastructure as a service (IaaS), platform as a service (PaaS), and cloud security best practices.</p>
-</div>
-           <div class="section">
-        <h2>TechnicalSkills</h2>
-       <div class="skills-grid">
-            <div class="skill-item">
-              <p><i class="fas fa-wrench"></i> WIX-Website Builder <span></span></p>
+        <!-- Skills Section -->
+        <section id="skills" class="section skills">
+            <div class="container">
+                <h2 class="section-title">Technical Skills</h2>
+                <div class="skills-grid">
+                    <div class="skill-category">
+                        <h3>Frontend</h3>
+                        <div class="skill-tags">
+                            <span><i class="fab fa-html5"></i> HTML</span>
+                            <span><i class="fab fa-css3-alt"></i> CSS</span>
+                            <span><i class="fab fa-js-square"></i> JavaScript</span>
+                            <span><i class="fab fa-react"></i> React</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Backend</h3>
+                        <div class="skill-tags">
+                            <span><i class="fab fa-node-js"></i> Node.js</span>
+                            <span><i class="fas fa-code"></i> C#</span>
+                            <span><i class="fab fa-php"></i> PHP</span>
+                            <span><i class="fas fa-server"></i> ASP.NET</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Database</h3>
+                        <div class="skill-tags">
+                            <span><i class="fas fa-database"></i> PostgreSQL</span>
+                            <span><i class="fas fa-database"></i> MySQL</span>
+                            <span><i class="fas fa-database"></i> Supabase</span>
+                        </div>
+                    </div>
+                    <div class="skill-category">
+                        <h3>Tools</h3>
+                        <div class="skill-tags">
+                            <span><i class="fas fa-cloud"></i> Cloud Hosting</span>
+                            <span><i class="fab fa-github"></i> GitHub</span>
+                            <span><i class="fas fa-plug"></i> APIs</span>
+                            <span><i class="fas fa-search"></i> SEO</span>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <div class="skill-item">
-                  <p><i class="fas fa-shopping-cart"></i> Shopify E-Commerce Platform <span></span></p>
-      </div>
-           <div class="skill-item">
-            <p><i class="fas fa-cloud-upload-alt"></i> System Deployment <span></span></p>
-        </div>
-            <div class="skill-item">
-               <p><i class="fas fa-cloud-upload-alt"></i> Cloud Hosting Platforms <span></span></p>
-           </div>
-           <div class="skill-item">
-            <p><i class="fas fa-plug"></i> IT Integration <span></span></p>
-        </div>
-            <div class="skill-item">
-        <p>
-        <img src="supabase-icon1721342077.logowik.com.webp" alt="Supabase Logo" style="height:20px; vertical-align:middle; margin-right:6px;">
-        SupaBase <span></span>
-        </p>
-         </div>
-        <div class="skill-item">
-          <p><i class="fas fa-database"></i> PostgreSQL <span></span></p>
-         </div>
-         <div class="skill-item">
-        <p>
-        <img src="hostinger-logo-png_seeklogo-487769.png" alt="Hostinger Logo" style="height:20px; vertical-align:middle; margin-right:6px;">
-        Hostinger <span></span>
-        </p>
-         </div>
-        <div class="skill-item">
-            <p><i class="fas fa-network-wired"></i> DNS Configuration <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fab fa-github"></i> CodeSpaces <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-chart-line"></i> FinTech Solutions<span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fab fa-google"></i> Google Web Forms <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fab fa-google"></i> Google App Script <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-desktop"></i> Desktop Application Development <span></span></p>
-        </div>
-         <div class="skill-item">
-            <p><i class="fas fa-laptop"></i> Web Applications <span></span></p>
-        </div>
-           <div class="skill-item">
-    <p><i class="fas fa-mobile-alt"></i> Mobile Applications <span></span></p>
-</div>
+        </section>
 
-<div class="skill-item">
-    <p><i class="fas fa-search"></i> SEO <span></span></p>
-</div>
+        <!-- Experience Section -->
+        <section id="experience" class="section experience">
+            <div class="container">
+                <h2 class="section-title">Work Experience</h2>
+                <div class="timeline">
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3>Software Developer</h3>
+                            <span class="timeline-date">Present - 2022</span>
+                            <p>Developed interactive web applications using JavaScript, C#, PHP, ASP.NET, and modern frameworks.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3>Web Hosting & Cloud Specialist</h3>
+                            <span class="timeline-date">Present - 2021</span>
+                            <p>Managed hosting environments, cloud deployments, and optimized server performance.</p>
+                        </div>
+                    </div>
+                    <div class="timeline-item">
+                        <div class="timeline-icon">
+                            <i class="fas fa-briefcase"></i>
+                        </div>
+                        <div class="timeline-content">
+                            <h3>Database Developer</h3>
+                            <span class="timeline-date">Present - 2020</span>
+                            <p>Designed and optimized PostgreSQL and MySQL databases for enterprise applications.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
 
-<div class="skill-item">
-    <p><i class="fas fa-brain"></i> GEO <span></span></p>
-</div>
+    <!-- Footer -->
+    <footer id="contact" class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kelvin Kadzenje</h3>
+                    <p>Full-Stack Software Developer</p>
+                    <p>Available for new opportunities</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Get In Touch</h4>
+                    <div class="social-links">
+                        <a href="mailto:kelvin.net6@gmail.com" class="social-link" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="#" class="social-link" title="X (Twitter)">
+                            <i class="fab fa-x-twitter"></i>
+                        </a>
+                        <a href="#" class="social-link" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="social-link" title="LinkedIn">
+                            <i class="fab fa-linkedin"></i>
+                        </a>
+                        <a href="#" class="social-link" title="GitHub">
+                            <i class="fab fa-github"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Kelvin Kadzenje. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
 
-        <div class="skill-item">
-            <p><i class="fas fa-cogs"></i> Object-Oriented Programming(OOP) <span></span></p>
-        </div>
-         <div class="skill-item">
-           <p><i class="fab fa-html5"></i> HTML <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fab fa-css3-alt"></i> CSS <span></span></p>
-        </div>
-         <div class="skill-item">
-            <p><i class="fab fa-js"></i> JavaScript <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-code"></i> C# <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fab fa-php"></i> PHP <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-sync-alt"></i> AJAX <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fab fa-python"></i></i> Python <span></span></p>
-        </div>
-       <div class="skill-item">
-  <p><i class="fas fa-mobile-alt"></i> React Native <span></span></p>
-</div>
-            <div class="skill-item">
-  <p><i class="fab fa-node-js"></i> Node.js <span></span></p>
-</div>
-         <div class="skill-item">
-            <p><i class="fas fa-code-branch"></i> API Development <span></span></p>
-        </div>
-         <div class="skill-item">
-            <p><i class="fas fa-code"></i> ASP.NET Web API <span></span></p>
-        </div>
-        <div class="skill-item">
-          <p><i class="fas fa-code"></i> Postman API <span></span></p>
-          </div>
-        <div class="skill-item">
-            <p><i class="fas fa-code"></i> ASP.NET Web Pages <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-code"></i> .NET Framework <span></span></p>
-         </div>
-        <div class="skill-item">
-          <p><i class="fas fa-envelope"></i> Email Services <span></span></p>
-        </div>
-        <div class="skill-item">
-         <p><i class="fas fa-comment"></i> SMS Services <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-server"></i> Back-End Web Development <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-code"></i> Front-End Development <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-database"></i> PhpMyAdmin <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-database"></i> MySQL <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-database"></i> Databases <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-tasks"></i> Software Project Management <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-search"></i> Software Research <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-clock"></i> Time Management <span></span></p>
-        </div>
-        <div class="skill-item">
-            <p><i class="fas fa-palette"></i> Software Design <span></span></p>
-        </div>
-    </div>
-</div>
     <script src="script.js"></script>
 </body>
 </html>
