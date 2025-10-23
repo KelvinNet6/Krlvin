@@ -686,3 +686,260 @@ body {
         flex-direction: column;
     }
 }
+/* 🔥 PENTESTING SECTION - FULLY MOBILE RESPONSIVE */
+.pentesting {
+    background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
+    color: white;
+    padding: 80px 0; /* Extra padding for mobile */
+}
+
+.section-subtitle {
+    text-align: center;
+    font-size: 1.3rem;
+    color: #a8b2d1;
+    max-width: 600px;
+    margin: 0 auto 4rem;
+}
+
+.pentest-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-bottom: 4rem;
+}
+
+.pentest-tool {
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(20px);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 20px;
+    padding: 2.5rem 1.5rem; /* Reduced side padding for mobile */
+    text-align: center;
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.pentest-tool::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, transparent, rgba(102, 126, 234, 0.1), transparent);
+    transition: left 0.6s ease;
+}
+
+.pentest-tool:hover {
+    transform: translateY(-10px);
+    border-color: #667eea;
+    box-shadow: 0 25px 50px rgba(102, 126, 234, 0.2);
+}
+
+.pentest-tool:hover::before {
+    left: 100%;
+}
+
+.tool-icon {
+    width: 80px;
+    height: 80px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.8rem;
+    color: white;
+    margin: 0 auto 1.5rem;
+    box-shadow: 0 10px 30px rgba(102, 126, 234, 0.3);
+}
+
+.pentest-tool h3 {
+    color: white;
+    margin-bottom: 1rem;
+    font-size: 1.4rem;
+}
+
+.pentest-tool p {
+    color: #a8b2d1;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.tool-tech {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    justify-content: center;
+}
+
+.tool-tech span {
+    background: rgba(255, 255, 255, 0.1);
+    color: #e2e8f0;
+    padding: 0.3rem 0.8rem;
+    border-radius: 15px;
+    font-size: 0.8rem;
+    backdrop-filter: blur(10px);
+}
+
+.pentest-cta {
+    text-align: center;
+    padding: 3rem 0;
+}
+
+.btn-large {
+    padding: 16px 40px;
+    font-size: 1.1rem;
+}
+
+.pentest-cta p {
+    color: #a8b2d1;
+    margin-top: 1rem;
+    font-size: 1.1rem;
+}
+
+/* ULTIMATE PYTHON PENTEST HIGHLIGHT */
+.skill-tags span:has(i.fab.fa-python),
+.project-tech span:has(i.fab.fa-python) {
+    background: linear-gradient(135deg, #ff6b35 0%, #f7931e 100%) !important;
+    color: white !important;
+    font-weight: 700 !important;
+    animation: python-pentest-glow 1.5s infinite alternate !important;
+    box-shadow: 0 0 25px rgba(255, 107, 53, 0.5) !important;
+}
+
+@keyframes python-pentest-glow {
+    0% { 
+        box-shadow: 0 0 15px rgba(255, 107, 53, 0.4), 0 0 30px rgba(255, 107, 53, 0.2);
+    }
+    100% { 
+        box-shadow: 0 0 25px rgba(255, 107, 53, 0.6), 0 0 40px rgba(255, 107, 53, 0.3);
+    }
+}
+
+/* 🔥 MOBILE RESPONSIVE FIXES */
+@media (max-width: 768px) {
+    .pentesting {
+        padding: 60px 0; /* Reduced padding */
+    }
+    
+    .section-subtitle {
+        font-size: 1.1rem;
+        margin-bottom: 3rem;
+        padding: 0 1rem;
+    }
+    
+    .pentest-grid {
+        grid-template-columns: 1fr; /* Single column on mobile */
+        gap: 1.5rem;
+        margin-bottom: 3rem;
+    }
+    
+    .pentest-tool {
+        padding: 2rem 1.5rem; /* More compact */
+        border-radius: 16px;
+    }
+    
+    .tool-icon {
+        width: 70px;
+        height: 70px;
+        font-size: 1.5rem;
+    }
+    
+    .pentest-tool h3 {
+        font-size: 1.3rem;
+        line-height: 1.3;
+    }
+    
+    .pentest-tool p {
+        font-size: 0.95rem;
+        margin-bottom: 1.2rem;
+    }
+    
+    .tool-tech {
+        gap: 0.4rem;
+    }
+    
+    .tool-tech span {
+        font-size: 0.75rem;
+        padding: 0.25rem 0.6rem;
+    }
+    
+    .pentest-cta {
+        padding: 2rem 1rem;
+    }
+    
+    .btn-large {
+        padding: 14px 30px;
+        font-size: 1rem;
+        width: 100%;
+        max-width: 280px;
+    }
+    
+    .pentest-cta p {
+        font-size: 1rem;
+        padding: 0 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .pentesting {
+        padding: 50px 0;
+    }
+    
+    .section-subtitle {
+        font-size: 1rem;
+        margin-bottom: 2.5rem;
+    }
+    
+    .pentest-tool {
+        padding: 1.8rem 1.2rem;
+    }
+    
+    .tool-icon {
+        width: 60px;
+        height: 60px;
+        font-size: 1.3rem;
+    }
+    
+    .pentest-tool h3 {
+        font-size: 1.2rem;
+    }
+    
+    .pentest-tool p {
+        font-size: 0.9rem;
+    }
+    
+    .tool-tech span {
+        font-size: 0.7rem;
+        padding: 0.2rem 0.5rem;
+    }
+    
+    .pentest-cta {
+        padding: 1.5rem 1rem;
+    }
+}
+
+/* Smooth animations on mobile (reduced motion) */
+@media (prefers-reduced-motion: reduce) {
+    .pentest-tool,
+    .pentest-tool::before {
+        transition: none;
+    }
+    
+    .pentest-tool:hover {
+        transform: none;
+    }
+}
+
+/* Landscape mobile fix */
+@media (max-height: 500px) and (orientation: landscape) {
+    .pentest-grid {
+        gap: 1rem;
+    }
+    
+    .pentest-tool {
+        padding: 1.5rem;
+    }
+}
