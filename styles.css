@@ -132,17 +132,18 @@ body {
     border: 5px solid rgba(255, 255, 255, 0.1);
 }
 
-/* Navigation */
+/* 🔥 FIXED NAVIGATION - NO MORE OVERLAP */
 .navbar {
-    position: absolute;
+    position: fixed; /* Changed from absolute to fixed */
     top: 0;
     left: 0;
     right: 0;
-    z-index: 10;
+    z-index: 1000;
     background: rgba(0, 0, 0, 0.1);
     backdrop-filter: blur(20px);
     border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     padding: 1rem 0;
+    transition: all 0.3s ease;
 }
 
 .nav-container {
@@ -566,33 +567,50 @@ body {
     color: #94a3b8;
 }
 
-/* Responsive Design */
+/* 🔥 FIXED RESPONSIVE DESIGN - NO MORE NAME OVERLAP */
 @media (max-width: 768px) {
+    /* 🔥 CRITICAL FIX: Clear navbar space */
+    .hero-header {
+        padding-top: 90px !important; /* Exact navbar height + buffer */
+        min-height: calc(100vh - 90px);
+    }
+    
+    .hero-content {
+        grid-template-columns: 1fr;
+        text-align: center;
+        gap: 2rem;
+        padding-top: 2rem;
+        margin-top: 1rem;
+    }
+
     .hamburger {
         display: flex;
+        z-index: 1001;
     }
 
     .nav-menu {
         position: fixed;
         left: -100%;
-        top: 70px;
+        top: 90px; /* Below fixed navbar */
         flex-direction: column;
-        background-color: rgba(0, 0, 0, 0.95);
+        background-color: rgba(0, 0, 0, 0.98);
         width: 100%;
+        height: calc(100vh - 90px);
         text-align: center;
-        transition: 0.3s;
+        transition: left 0.3s ease;
         padding: 2rem 0;
-        gap: 1rem;
+        gap: 2rem;
+        z-index: 999;
     }
 
     .nav-menu.active {
         left: 0;
     }
 
-    .hero-content {
-        grid-template-columns: 1fr;
-        text-align: center;
-        gap: 2rem;
+    /* Navbar becomes solid on mobile */
+    .navbar {
+        background: rgba(0, 0, 0, 0.95) !important;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
     }
 
     .about-grid {
@@ -649,6 +667,10 @@ body {
 }
 
 @media (max-width: 480px) {
+    .hero-header {
+        padding-top: 100px !important; /* Extra for small screens */
+    }
+    
     .hero-buttons {
         flex-direction: column;
         align-items: center;
