@@ -213,6 +213,7 @@ body {
 /* Sections */
 .section {
     padding: 100px 0;
+     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
 }
 
 .section-title {
