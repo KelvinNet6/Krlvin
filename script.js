@@ -1,40 +1,123 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Animate language bars
-    document.querySelectorAll('.language-bar').forEach(bar => {
-        const level = bar.getAttribute('data-level');
-        setTimeout(() => {
-            bar.style.setProperty('--width', `${level}%`);
-        }, 200);
+// script.js
+document.addEventListener('DOMContentLoaded', function() {
+    // Navbar scroll effect
+    window.addEventListener('scroll', () => {
+        const navbar = document.querySelector('.navbar');
+        if (window.scrollY > 100) {
+            navbar.style.background = 'rgba(0, 0, 0, 0.15)';
+            navbar.style.backdropFilter = 'blur(20px)';
+        } else {
+            navbar.style.background = 'rgba(0, 0, 0, 0.1)';
+        }
     });
-    const progressCircles = document.querySelectorAll(".progress-circle");
 
-    progressCircles.forEach(circle => {
-        const targetPercentage = parseInt(circle.getAttribute("data-percentage"));
-        let currentPercentage = 0;
-        
-        const animate = () => {
-            if (currentPercentage < targetPercentage) {
-                currentPercentage++;
-                let angle = (currentPercentage / 100) * 360;
-                let gradient = `conic-gradient(#007bff ${angle}deg, #ccc ${angle}deg)`;
-                circle.style.background = gradient;
-                circle.querySelector("span").innerText = currentPercentage + "%";
-                requestAnimationFrame(animate);
+    // Smooth scrolling for nav links
+    const navLinks = document.querySelectorAll('.nav-link');
+    navLinks.forEach(link => {
+        link.addEventListener('click', (e) => {
+            e.preventDefault();
+            const targetId = link.getAttribute('href');
+            const targetSection = document.querySelector(targetId);
+            if (targetSection) {
+                targetSection.scrollIntoView({ behavior: 'smooth' });
             }
-        };
-        
-        animate();
+            
+            // Update active nav link
+            navLinks.forEach(l => l.classList.remove('active'));
+            link.classList.add('active');
+        });
+    });
+
+    // Active nav link on scroll
+    window.addEventListener('scroll', () => {
+        let current = '';
+        const sections = document.querySelectorAll('section');
+        const navHeight = document.querySelector('.navbar').offsetHeight;
+
+        sections.forEach(section => {
+            const sectionTop = section.offsetTop - navHeight;
+            const sectionHeight = section.clientHeight;
+            if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
+                current = section.getAttribute('id');
+            }
+        });
+
+        navLinks.forEach(link => {
+            link.classList.remove('active');
+            if (link.getAttribute('href') === `#${current}`) {
+                link.classList.add('active');
+            }
+        });
+    });
+
+    // Animate progress bars
+    const progressBars = document.querySelectorAll('.progress-bar');
+    const observerOptions = {
+        threshold: 0.5,
+        rootMargin: '0px 0px -100px 0px'
+    };
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const progressBar = entry.target;
+                const width = progressBar.getAttribute('data-width');
+                progressBar.style.width = width + '%';
+            }
+        });
+    }, observerOptions);
+
+    progressBars.forEach(bar => observer.observe(bar));
+
+    // Mobile menu toggle
+    const hamburger = document.querySelector('.hamburger');
+    const navMenu = document.querySelector('.nav-menu');
+
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('active');
+        navMenu.classList.toggle('active');
+    });
+
+    // Close mobile menu when clicking on a link
+    navLinks.forEach(link => {
+        link.addEventListener('click', () => {
+            hamburger.classList.remove('active');
+            navMenu.classList.remove('active');
+        });
+    });
+
+    // Animate stats on scroll
+    const statItems = document.querySelectorAll('.stat-item h3');
+    const statObserver = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const target = entry.target;
+                const targetValue = target.textContent.replace('%', '');
+                let current = 0;
+                const increment = targetValue / 100;
+                const timer = setInterval(() => {
+                    current += increment;
+                    if (current >= targetValue) {
+                        target.textContent = targetValue + '%';
+                        clearInterval(timer);
+                    } else {
+                        target.textContent = Math.floor(current) + '%';
+                    }
+                }, 20);
+            }
+        });
+    });
+
+    statItems.forEach(item => statObserver.observe(item));
+
+    // Project card hover effects
+    const projectCards = document.querySelectorAll('.project-card');
+    projectCards.forEach(card => {
+        card.addEventListener('mouseenter', () => {
+            card.style.transform = 'translateY(-10px)';
+        });
+        card.addEventListener('mouseleave', () => {
+            card.style.transform = 'translateY(0)';
+        });
     });
 });
-
-
-const modal = document.getElementById("modules-modal");
-const modulesLink = document.getElementById("modules-link");
-
-modulesLink.onclick = function() {
-    modal.style.bottom = "0"; 
-};
-
-function closeModal() {
-    modal.style.bottom = "-100%"; 
-}
