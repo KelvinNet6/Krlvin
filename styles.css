@@ -386,7 +386,7 @@ body {
 }
 
 .skill-category {
-    background: white;
+    background: rgba(255, 255, 255, 0.05);
     padding: 2rem;
     border-radius: 20px;
     box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
@@ -441,6 +441,7 @@ body {
     align-items: center;
     margin-bottom: 4rem;
     position: relative;
+    background: rgba(255, 255, 255, 0.05);
 }
 
 .timeline-item:nth-child(even) {
