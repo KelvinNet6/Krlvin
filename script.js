@@ -121,3 +121,12 @@ document.addEventListener('DOMContentLoaded', function() {
         });
     });
 });
+function updateYearsExperience() {
+            const startYear = 2022;
+            const currentYear = new Date().getFullYear();
+            const yearsExperience = currentYear - startYear;
+            document.getElementById('years-experience').textContent = yearsExperience;
+        }
+
+        // Run on page load
+        updateYearsExperience();
