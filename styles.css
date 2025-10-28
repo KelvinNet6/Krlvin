@@ -154,9 +154,10 @@ body {
     align-items: center;
 }
 
-.nav-logo h3 {
+.nav-logo h3 a{
     color: white;
     font-weight: 600;
+    text-decoration: none;
 }
 
 .nav-menu {
