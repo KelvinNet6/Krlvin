@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===================== 3. NAVIGATION: SAME & CROSS PAGE =====================
+    // ===================== 3. NAVIGATION: SAME & CROSS PAGE (FIXED) =====================
     navLinks.forEach(link => {
         link.addEventListener('click', e => {
             const href = link.getAttribute('href');
@@ -50,11 +50,15 @@ document.addEventListener('DOMContentLoaded', () => {
             // Same-page: smooth scroll
             e.preventDefault();
             const target = document.querySelector(href);
-            if (target) target.scrollIntoView({ behavior: 'smooth' });
+            if (target) {
+                target.scrollIntoView({ behavior: 'smooth' });
+            }
 
-            // Update active
-            navLinks.forEach(l => l.classList.remove('active'));
-            link.classList.add('active');
+            // === ONLY UPDATE IF NOT ALREADY ACTIVE ===
+            if (!link.classList.contains('active')) {
+                navLinks.forEach(l => l.classList.remove('active'));
+                link.classList.add('active');
+            }
         });
     });
 
@@ -66,20 +70,28 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // ===================== 5. ACTIVE LINK ON SCROLL =====================
+    // ===================== 5. ACTIVE LINK ON SCROLL (IMPROVED) =====================
     const setActiveLinkOnScroll = () => {
         if (!navbar) return;
-        let current = '';
-        const sections = document.querySelectorAll('section[id]');
-        const navHeight = navbar.offsetHeight + 30;
 
-        sections.forEach(sec => {
-            const top = sec.offsetTop - navHeight;
-            const height = sec.offsetHeight;
-            if (window.scrollY >= top && window.scrollY < top + height) {
-                current = sec.getAttribute('id');
-            }
-        });
+        const scrollPosition = window.scrollY;
+        let current = '';
+
+        // Force "home" when at top
+        if (scrollPosition < 100) {
+            current = 'home';
+        } else {
+            const sections = document.querySelectorAll('section[id]');
+            const navHeight = navbar.offsetHeight + 30;
+
+            sections.forEach(sec => {
+                const top = sec.offsetTop - navHeight;
+                const height = sec.offsetHeight;
+                if (scrollPosition >= top && scrollPosition < top + height) {
+                    current = sec.getAttribute('id');
+                }
+            });
+        }
 
         navLinks.forEach(link => {
             link.classList.remove('active');
@@ -219,6 +231,8 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     }
 
-    // Initial scroll check
-    setActiveLinkOnScroll();
+    // === FINAL: Force correct state after load & smooth scroll ===
+    setTimeout(() => {
+        setActiveLinkOnScroll();
+    }, 500); // After any hash scroll
 });
