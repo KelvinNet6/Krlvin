@@ -49,8 +49,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             // ---- CROSS-PAGE LINK (e.g. enquiry.html) ----
             if (href.includes('.html')) {
-                // Let browser navigate. Hash will be handled on load (below)
-                return;
+                return; // Let browser navigate
             }
 
             // ---- SAME-PAGE ANCHOR (e.g. #about) ----
@@ -72,7 +71,7 @@ document.addEventListener('DOMContentLoaded', () => {
         if (target) {
             setTimeout(() => {
                 target.scrollIntoView({ behavior: 'smooth' });
-            }, 300); // Wait for layout
+            }, 300);
         }
     }
 
@@ -171,7 +170,6 @@ document.addEventListener('DOMContentLoaded', () => {
         const loader    = submitBtn.querySelector('.loader');
         const btnText   = submitBtn.querySelector('span');
 
-        // Service cards
         document.querySelectorAll('.service-card').forEach(card => {
             card.addEventListener('click', () => {
                 document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
@@ -180,7 +178,6 @@ document.addEventListener('DOMContentLoaded', () => {
             });
         });
 
-        // Submit
         form.addEventListener('submit', e => {
             e.preventDefault();
             if (form.honeypot.value) return;
@@ -205,14 +202,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }, 1500);
         });
     }
-});
-    // ===================== 11. MARK ACTIVE PAGE ON LOAD =====================
+
+    // ===================== 11. MARK ACTIVE PAGE ON LOAD (FIXED) =====================
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+
     navLinks.forEach(link => {
-        link.classList.remove('active'); // clear first
+        link.classList.remove('active'); // Reset all
         const href = link.getAttribute('href');
 
-        // Match: enquiry.html, index.html#home, #about, etc.
+        // Match:
+        // - enquiry.html
+        // - index.html#home
+        // - #about (on index.html)
         if (
             href === currentPage ||
             href === currentPage + window.location.hash ||
@@ -221,3 +222,4 @@ document.addEventListener('DOMContentLoaded', () => {
             link.classList.add('active');
         }
     });
+});
