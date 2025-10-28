@@ -193,9 +193,8 @@ body {
 
 .nav-link:hover::after,
 .nav-link.active::after {
-    width: 100%;
+    width: 100% !important;
 }
-
 .hamburger {
     display: none;
     flex-direction: column;
