@@ -223,3 +223,14 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 });
+// ===================== 12. FORCE "HOME" ACTIVE ON INDEX.HTML LOAD =====================
+    if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+        const homeLink = Array.from(navLinks).find(link => 
+            link.getAttribute('href') === '#home' || 
+            link.textContent.trim().toLowerCase() === 'home'
+        );
+        if (homeLink) {
+            navLinks.forEach(l => l.classList.remove('active'));
+            homeLink.classList.add('active');
+        }
+    }
