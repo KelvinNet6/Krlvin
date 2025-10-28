@@ -361,7 +361,23 @@
     </div>
 </section>
     </main>
+<script>
+  document.addEventListener('DOMContentLoaded', function () {
+    const startYear = 2023;
+    const statElement = document.querySelector('#years-experience');
+    
+    function updateYears() {
+      const now = new Date();
+      const currentYear = now.getFullYear();
+      const isAfterJan1 = now.getMonth() > 0 || now.getDate() >= 1;
+      const years = isAfterJan1 ? currentYear - startYear : currentYear - startYear - 1;
+      if (statElement) statElement.textContent = years;
+    }
 
+    updateYears(); // Initial
+    setInterval(updateYears, 24 * 60 * 60 * 1000); // Daily check
+  });
+</script>
     <!-- Footer -->
     <footer id="contact" class="footer">
         <div class="container">
