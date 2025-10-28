@@ -130,3 +130,57 @@ function updateYearsExperience() {
 
         // Run on page load
         updateYearsExperience();
+
+// enquiry.js - Form logic for enquiry.html
+
+document.addEventListener('DOMContentLoaded', () => {
+    const form = document.getElementById('contactForm');
+    const alertBox = document.getElementById('alertBox');
+    const submitBtn = form.querySelector('.submit-btn');
+    const loader = submitBtn.querySelector('.loader');
+    const btnText = submitBtn.querySelector('span');
+
+    // Service Card Selector
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', () => {
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            const service = card.getAttribute('data-service');
+            document.getElementById('service').value = service;
+        });
+    });
+
+    // Form Submission
+    form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        // Honeypot check
+        if (form.honeypot.value) return;
+
+        // Show loading
+        submitBtn.disabled = true;
+        btnText.textContent = 'Sending...';
+        loader.style.display = 'block';
+
+        // Simulate send (replace with real backend)
+        setTimeout(() => {
+            loader.style.display = 'none';
+            submitBtn.disabled = false;
+            btnText.textContent = 'Send Secure Message';
+
+            showAlert('Message sent securely! I\'ll reply within 24 hours.', 'success');
+            form.reset();
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+            document.getElementById('service').value = '';
+        }, 1500);
+    });
+
+    function showAlert(message, type) {
+        alertBox.textContent = message;
+        alertBox.className = `alert ${type}`;
+        alertBox.style.display = 'block';
+        setTimeout(() => {
+            alertBox.style.display = 'none';
+        }, 5000);
+    }
+});
