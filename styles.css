@@ -154,12 +154,16 @@ body {
     align-items: center;
 }
 
-.nav-logo h3 a{
+.nav-logo h3 a {
     color: white;
     font-weight: 600;
     text-decoration: none;
+    transition: color 0.3s ease;
 }
 
+.nav-logo h3 a:hover {
+    color: #a0a0a0;
+}
 .nav-menu {
     display: flex;
     list-style: none;
