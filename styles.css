@@ -1072,6 +1072,13 @@ select:focus {
     border-color: #667eea;
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
 }
+select {
+    background-image: url("data:image/svg+xml;utf8,<svg fill='white' height='24' viewBox='0 0 24 24' width='24' xmlns='http://www.w3.org/2000/svg'><path d='M7 10l5 5 5-5z'/></svg>");
+    background-repeat: no-repeat;
+    background-position: right 1rem center;
+    background-size: 1rem;
+    padding-right: 2.5rem; /* space for the icon */
+}
 /* Submit Button */
 .submit-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
