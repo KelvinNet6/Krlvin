@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===================== 3. NAVIGATION: SAME & CROSS PAGE (FIXED) =====================
+    // ===================== 3. NAVIGATION: SAME & CROSS PAGE =====================
     navLinks.forEach(link => {
         link.addEventListener('click', e => {
             const href = link.getAttribute('href');
@@ -54,7 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 target.scrollIntoView({ behavior: 'smooth' });
             }
 
-            // === ONLY UPDATE IF NOT ALREADY ACTIVE ===
+            // Only update if not already active
             if (!link.classList.contains('active')) {
                 navLinks.forEach(l => l.classList.remove('active'));
                 link.classList.add('active');
@@ -77,8 +77,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const scrollPosition = window.scrollY;
         let current = '';
 
-        // Force "home" when at top
-        if (scrollPosition < 100) {
+        // Force "home" when at top (index.html)
+        if (scrollPosition < 100 && (window.location.pathname.endsWith('index.html') || window.location.pathname === '/')) {
             current = 'home';
         } else {
             const sections = document.querySelectorAll('section[id]');
@@ -203,17 +203,21 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===================== 11. SET ACTIVE LINK ON PAGE LOAD (FINAL FIX) =====================
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
     const isRoot = currentPage === '' || currentPage === 'index.html' || window.location.pathname === '/';
+    const isEnquiry = currentPage === 'enquiry.html';
 
     // Clear all active
     navLinks.forEach(link => link.classList.remove('active'));
 
-    // 1. Enquiry page
-    if (currentPage === 'enquiry.html') {
-        const enquiryLink = Array.from(navLinks).find(l => l.getAttribute('href') === 'enquiry.html');
+    // 1. ENQUIRY PAGE: Activate Enquiry link
+    if (isEnquiry) {
+        const enquiryLink = Array.from(navLinks).find(l => 
+            l.getAttribute('href') === 'enquiry.html' || 
+            l.getAttribute('href').includes('enquiry.html#')
+        );
         if (enquiryLink) enquiryLink.classList.add('active');
     }
 
-    // 2. Index page (root or index.html)
+    // 2. INDEX PAGE: Activate Home link
     else if (isRoot) {
         const homeLink = Array.from(navLinks).find(l => 
             l.getAttribute('href') === '#home' || 
@@ -222,17 +226,16 @@ document.addEventListener('DOMContentLoaded', () => {
         if (homeLink) homeLink.classList.add('active');
     }
 
-    // 3. Hash navigation
-    if (window.location.hash && isRoot) {
-        const hashLink = Array.from(navLinks).find(l => l.getAttribute('href') === window.location.hash);
+    // 3. HASH NAVIGATION (e.g. #about, #contact-hero)
+    if (window.location.hash) {
+        const hash = window.location.hash; // e.g. "#contact-hero"
+        const hashLink = Array.from(navLinks).find(l => l.getAttribute('href') === hash);
         if (hashLink) {
             navLinks.forEach(l => l.classList.remove('active'));
             hashLink.classList.add('active');
         }
     }
 
-    // === FINAL: Force correct state after load & smooth scroll ===
-    setTimeout(() => {
-        setActiveLinkOnScroll();
-    }, 500); // After any hash scroll
+    // Final scroll check
+    setTimeout(setActiveLinkOnScroll, 500);
 });
