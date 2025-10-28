@@ -203,28 +203,23 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===================== 11. MARK ACTIVE PAGE ON LOAD (FIXED) =====================
+       // ===================== 11. MARK ACTIVE PAGE ON LOAD =====================
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
+    // Clear all active states first
+    navLinks.forEach(link => link.classList.remove('active'));
+
+    // Set active based on current page
     navLinks.forEach(link => {
-        link.classList.remove('active'); // Reset all
         const href = link.getAttribute('href');
 
-        // Match:
-        // - enquiry.html
-        // - index.html#home
-        // - #about (on index.html)
-        if (
-            href === currentPage ||
-            href === currentPage + window.location.hash ||
-            (currentPage === 'index.html' && href.startsWith('#'))
-        ) {
+        if (href === currentPage) {
             link.classList.add('active');
         }
     });
-});
-// ===================== 12. FORCE "HOME" ACTIVE ON INDEX.HTML LOAD =====================
-    if (window.location.pathname.endsWith('index.html') || window.location.pathname === '/') {
+
+    // ===================== 12. FORCE "HOME" ACTIVE ON INDEX.HTML LOAD =====================
+    if (currentPage === 'index.html' || currentPage === '' || window.location.pathname === '/') {
         const homeLink = Array.from(navLinks).find(link => 
             link.getAttribute('href') === '#home' || 
             link.textContent.trim().toLowerCase() === 'home'
@@ -234,3 +229,4 @@ document.addEventListener('DOMContentLoaded', () => {
             homeLink.classList.add('active');
         }
     }
+});
