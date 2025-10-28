@@ -264,13 +264,3 @@ if (form) {
     // Final scroll check
     setTimeout(setActiveLinkOnScroll, 500);
 });
-document.addEventListener('DOMContentLoaded', function () {
-    const startYear = 2023;
-    const currentYear = new Date().getFullYear();
-    const yearsExperience = currentYear - startYear;
-
-    const statElement = document.querySelector('#years-experience');
-    if (statElement) {
-      statElement.textContent = yearsExperience;
-    }
-  });
