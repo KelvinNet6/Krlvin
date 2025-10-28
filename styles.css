@@ -505,7 +505,9 @@ body {
     color: #64748b;
     line-height: 1.6;
 }
-
+.timeline-content ul li{
+    color: #64748b;
+}
 /* Footer */
 .footer {
     background: #0f172a;
