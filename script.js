@@ -188,8 +188,9 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-    // ===================== 11. SET ACTIVE LINK ON PAGE LOAD =====================
+          // ===================== 11. SET ACTIVE LINK ON PAGE LOAD =====================
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    const isIndexPage = currentPage === 'index.html' || currentPage === '' || window.location.pathname === '/';
 
     // Clear all active states
     navLinks.forEach(link => link.classList.remove('active'));
@@ -200,8 +201,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (enquiryLink) enquiryLink.classList.add('active');
     }
 
-    // 2. If on index.html → activate Home link
-    else if (currentPage === 'index.html' || currentPage === '' || window.location.pathname === '/') {
+    // 2. If on index.html (or root) → activate Home link
+    else if (isIndexPage) {
         const homeLink = Array.from(navLinks).find(l => 
             l.getAttribute('href') === '#home' || 
             l.textContent.trim().toLowerCase() === 'home'
@@ -209,8 +210,8 @@ document.addEventListener('DOMContentLoaded', () => {
         if (homeLink) homeLink.classList.add('active');
     }
 
-    // 3. If hash exists (e.g. index.html#about) → activate that link
-    if (window.location.hash && currentPage === 'index.html') {
+    // 3. If hash exists (e.g. #about) → activate that link
+    if (window.location.hash && isIndexPage) {
         const hashLink = Array.from(navLinks).find(l => l.getAttribute('href') === window.location.hash);
         if (hashLink) {
             navLinks.forEach(l => l.classList.remove('active'));
@@ -220,4 +221,3 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Initial scroll check
     setActiveLinkOnScroll();
-});
