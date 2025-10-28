@@ -153,52 +153,78 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // ===================== 9. YEARS EXPERIENCE =====================
-    const yearsEl = document.getElementById('years-experience');
-    if (yearsEl) {
-        yearsEl.textContent = new Date().getFullYear() - 2022;
-    }
-
     // ===================== 10. ENQUIRY FORM =====================
-    const form = document.getElementById('contactForm');
-    if (form) {
-        const alertBox  = document.getElementById('alertBox');
-        const submitBtn = form.querySelector('.submit-btn');
-        const loader    = submitBtn.querySelector('.loader');
-        const btnText   = submitBtn.querySelector('span');
+const form = document.getElementById('contactForm');
+if (form) {
+    const alertBox   = document.getElementById('alertBox');
+    const submitBtn  = form.querySelector('.submit-btn');
+    const loader     = submitBtn.querySelector('.loader');
+    const btnText    = submitBtn.querySelector('span');
 
-        document.querySelectorAll('.service-card').forEach(card => {
-            card.addEventListener('click', () => {
-                document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
-                card.classList.add('selected');
-                document.getElementById('service').value = card.dataset.service;
-            });
+    // ---- Service-card quick-select (unchanged) ----
+    document.querySelectorAll('.service-card').forEach(card => {
+        card.addEventListener('click', () => {
+            document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
+            card.classList.add('selected');
+            document.getElementById('service').value = card.dataset.service;
         });
+    });
 
-        form.addEventListener('submit', e => {
-            e.preventDefault();
-            if (form.honeypot.value) return;
+    // ---- Real Formspree submit (AJAX) ----
+    form.addEventListener('submit', async e => {
+        e.preventDefault();
 
-            submitBtn.disabled = true;
-            btnText.textContent = 'Sending...';
-            loader.style.display = 'block';
+        // Honeypot guard
+        if (form.honeypot.value) return;
 
+        // UI: disable button + show loader
+        submitBtn.disabled = true;
+        btnText.textContent = 'Sending...';
+        loader.style.display = 'inline-block';
+        alertBox.style.display = 'none';
+
+        try {
+            const response = await fetch(form.action, {
+                method: 'POST',
+                body: new FormData(form),
+                headers: { 'Accept': 'application/json' }
+            });
+
+            if (response.ok) {
+                // ---- SUCCESS ----
+                alertBox.textContent = "Message sent securely! I'll reply within 24 hours.";
+                alertBox.className = 'alert success';
+            } else {
+                // ---- Formspree returned an error (e.g. validation) ----
+                const data = await response.json();
+                throw new Error(data.error || 'Unknown Formspree error');
+            }
+        } catch (err) {
+            // ---- NETWORK / JS error ----
+            alertBox.textContent = err.message || 'Something went wrong. Please try again.';
+            alertBox.className = 'alert error';
+        } finally {
+            // ---- Always restore UI ----
             setTimeout(() => {
                 loader.style.display = 'none';
                 submitBtn.disabled = false;
                 btnText.textContent = 'Send Secure Message';
-
-                alertBox.textContent = "Message sent securely! I'll reply within 24 hours.";
-                alertBox.className = 'alert success';
                 alertBox.style.display = 'block';
+
+                // Auto-hide after 5 seconds
                 setTimeout(() => alertBox.style.display = 'none', 5000);
 
-                form.reset();
-                document.querySelectorAll('.service-card').forEach(c => c.classList.remove('selected'));
-                document.getElementById('service').value = '';
-            }, 1500);
-        });
-    }
+                // Reset form & cards only on success
+                if (alertBox.classList.contains('success')) {
+                    form.reset();
+                    document.querySelectorAll('.service-card')
+                            .forEach(c => c.classList.remove('selected'));
+                    document.getElementById('service').value = '';
+                }
+            }, 300); // tiny delay so the user sees the loader
+        }
+    });
+}
 
     // ===================== 11. SET ACTIVE LINK ON PAGE LOAD (FINAL FIX) =====================
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
