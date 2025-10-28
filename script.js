@@ -16,13 +16,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===================== 1. NAVBAR BG ON SCROLL =====================
     const updateNavbarBg = () => {
         if (!navbar) return;
-        if (window.scrollY > 100) {
-            navbar.style.background = 'rgba(0, 0, 0, 0.15)';
-            navbar.style.backdropFilter = 'blur(20px)';
-        } else {
-            navbar.style.background = 'rgba(0, 0, 0, 0.1)';
-            navbar.style.backdropFilter = 'none';
-        }
+        navbar.style.background = window.scrollY > 100
+            ? 'rgba(0, 0, 0, 0.15)'
+            : 'rgba(0, 0, 0, 0.1)';
+        navbar.style.backdropFilter = window.scrollY > 100 ? 'blur(20px)' : 'none';
     };
     window.addEventListener('scroll', updateNavbarBg);
     updateNavbarBg();
@@ -47,31 +44,25 @@ document.addEventListener('DOMContentLoaded', () => {
         link.addEventListener('click', e => {
             const href = link.getAttribute('href');
 
-            // ---- CROSS-PAGE LINK (e.g. enquiry.html) ----
-            if (href.includes('.html')) {
-                return; // Let browser navigate
-            }
+            // Cross-page: let browser handle
+            if (href.includes('.html')) return;
 
-            // ---- SAME-PAGE ANCHOR (e.g. #about) ----
+            // Same-page: smooth scroll
             e.preventDefault();
             const target = document.querySelector(href);
-            if (target) {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }
+            if (target) target.scrollIntoView({ behavior: 'smooth' });
 
-            // Update active state
+            // Update active
             navLinks.forEach(l => l.classList.remove('active'));
             link.classList.add('active');
         });
     });
 
-    // ===================== 4. AUTO-SCROLL ON PAGE LOAD WITH HASH =====================
+    // ===================== 4. AUTO-SCROLL ON HASH =====================
     if (window.location.hash) {
         const target = document.querySelector(window.location.hash);
         if (target) {
-            setTimeout(() => {
-                target.scrollIntoView({ behavior: 'smooth' });
-            }, 300);
+            setTimeout(() => target.scrollIntoView({ behavior: 'smooth' }), 300);
         }
     }
 
@@ -99,7 +90,6 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     };
     window.addEventListener('scroll', setActiveLinkOnScroll);
-    setActiveLinkOnScroll();
 
     // ===================== 6. PROGRESS BARS =====================
     if (progressBars.length) {
@@ -107,13 +97,11 @@ document.addEventListener('DOMContentLoaded', () => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     const bar = entry.target;
-                    const width = bar.getAttribute('data-width');
-                    bar.style.width = `${width}%`;
+                    bar.style.width = bar.getAttribute('data-width') + '%';
                     observer.unobserve(bar);
                 }
             });
         }, { threshold: 0.7, rootMargin: '0px 0px -50px 0px' });
-
         progressBars.forEach(bar => observer.observe(bar));
     }
 
@@ -139,7 +127,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 }
             });
         }, { threshold: 0.8 });
-
         statItems.forEach(item => observer.observe(item));
     }
 
@@ -157,12 +144,10 @@ document.addEventListener('DOMContentLoaded', () => {
     // ===================== 9. YEARS EXPERIENCE =====================
     const yearsEl = document.getElementById('years-experience');
     if (yearsEl) {
-        const startYear = 2022;
-        const years = new Date().getFullYear() - startYear;
-        yearsEl.textContent = years;
+        yearsEl.textContent = new Date().getFullYear() - 2022;
     }
 
-    // ===================== 10. ENQUIRY FORM (ONLY ON ENQUIRY.HTML) =====================
+    // ===================== 10. ENQUIRY FORM =====================
     const form = document.getElementById('contactForm');
     if (form) {
         const alertBox  = document.getElementById('alertBox');
@@ -203,30 +188,36 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 
-       // ===================== 11. MARK ACTIVE PAGE ON LOAD =====================
+    // ===================== 11. SET ACTIVE LINK ON PAGE LOAD =====================
     const currentPage = window.location.pathname.split('/').pop() || 'index.html';
 
-    // Clear all active states first
+    // Clear all active states
     navLinks.forEach(link => link.classList.remove('active'));
 
-    // Set active based on current page
-    navLinks.forEach(link => {
-        const href = link.getAttribute('href');
+    // 1. If on enquiry.html → activate Enquiry link
+    if (currentPage === 'enquiry.html') {
+        const enquiryLink = Array.from(navLinks).find(l => l.getAttribute('href') === 'enquiry.html');
+        if (enquiryLink) enquiryLink.classList.add('active');
+    }
 
-        if (href === currentPage) {
-            link.classList.add('active');
-        }
-    });
-
-    // ===================== 12. FORCE "HOME" ACTIVE ON INDEX.HTML LOAD =====================
-    if (currentPage === 'index.html' || currentPage === '' || window.location.pathname === '/') {
-        const homeLink = Array.from(navLinks).find(link => 
-            link.getAttribute('href') === '#home' || 
-            link.textContent.trim().toLowerCase() === 'home'
+    // 2. If on index.html → activate Home link
+    else if (currentPage === 'index.html' || currentPage === '' || window.location.pathname === '/') {
+        const homeLink = Array.from(navLinks).find(l => 
+            l.getAttribute('href') === '#home' || 
+            l.textContent.trim().toLowerCase() === 'home'
         );
-        if (homeLink) {
+        if (homeLink) homeLink.classList.add('active');
+    }
+
+    // 3. If hash exists (e.g. index.html#about) → activate that link
+    if (window.location.hash && currentPage === 'index.html') {
+        const hashLink = Array.from(navLinks).find(l => l.getAttribute('href') === window.location.hash);
+        if (hashLink) {
             navLinks.forEach(l => l.classList.remove('active'));
-            homeLink.classList.add('active');
+            hashLink.classList.add('active');
         }
     }
+
+    // Initial scroll check
+    setActiveLinkOnScroll();
 });
