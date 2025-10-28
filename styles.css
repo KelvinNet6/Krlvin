@@ -1053,7 +1053,25 @@ textarea {
     min-height: 140px;
     resize: vertical;
 }
+select {
+    background-color: rgba(255, 255, 255, 0.08);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    appearance: none; /* Removes default browser arrow style */
+    -webkit-appearance: none;
+    -moz-appearance: none;
+}
 
+select option {
+    background-color: #1e293b; /* dark dropdown background */
+    color: white; /* white text */
+}
+
+select:focus {
+    background-color: rgba(255, 255, 255, 0.12);
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.2);
+}
 /* Submit Button */
 .submit-btn {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
