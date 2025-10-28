@@ -4,9 +4,6 @@
     padding: 0;
     box-sizing: border-box;
 }
-html{
-    scroll-behaviour: smooth;
-}
 body {
     font-family: 'Poppins', sans-serif;
     line-height: 1.6;
