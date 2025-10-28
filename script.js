@@ -206,3 +206,18 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+    // ===================== 11. MARK ACTIVE PAGE ON LOAD =====================
+    const currentPage = window.location.pathname.split('/').pop() || 'index.html';
+    navLinks.forEach(link => {
+        link.classList.remove('active'); // clear first
+        const href = link.getAttribute('href');
+
+        // Match: enquiry.html, index.html#home, #about, etc.
+        if (
+            href === currentPage ||
+            href === currentPage + window.location.hash ||
+            (currentPage === 'index.html' && href.startsWith('#'))
+        ) {
+            link.classList.add('active');
+        }
+    });
