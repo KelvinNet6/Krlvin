@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Kelvin Kadzenje | Full-Stack & Pentesting Expert</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- Navbar (Same as index.html) -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="nav-logo">
+                <h3>Kelvin Kadzenje</h3>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html#home" class="nav-link">Home</a></li>
+                <li><a href="index.html#about" class="nav-link">About</a></li>
+                <li><a href="index.html#projects" class="nav-link">Projects</a></li>
+                <li><a href="index.html#pentesting" class="nav-link">Pentesting</a></li>
+                <li><a href="index.html#skills" class="nav-link">Skills</a></li>
+                <li><a href="index.html#experience" class="nav-link">Experience</a></li>
+                <li><a href="enquiry.html" class="nav-link active">Enquiry</a></li>
+            </ul>
+            <div class="hamburger">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero -->
+    <section class="contact-hero">
+        <div class="container">
+            <h1>Let's Secure Your Future</h1>
+            <p>Full-Stack Development • Custom Python Pentesting • Web Apps • Cloud Solutions</p>
+        </div>
+    </section>
+
+    <!-- Contact Form -->
+    <section class="section">
+        <div class="container form-container">
+            <div class="contact-form">
+                <h2 class="section-title" style="text-align: center; margin-bottom: 1rem;">Send an Enquiry</h2>
+                <p style="text-align: center; color: #a8b2d1; margin-bottom: 2.5rem;">
+                    Need a pentest, web app, or custom tool? Tell me your mission.
+                </p>
+
+                <form id="contactForm" novalidate>
+                    <!-- Honeypot -->
+                    <input type="text" class="honeypot" name="honeypot" tabindex="-1" autocomplete="off">
+
+                    <div class="form-grid">
+                        <div class="form-group">
+                            <label for="name">Full Name *</label>
+                            <input type="text" id="name" name="name" required placeholder="John Doe">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Email Address *</label>
+                            <input type="email" id="email" name="email" required placeholder="john@example.com">
+                        </div>
+                        <div class="form-group">
+                            <label for="phone">Phone (Optional)</label>
+                            <input type="tel" id="phone" name="phone" placeholder="+27 67 291 1605">
+                        </div>
+                        <div class="form-group">
+                            <label for="service">Service Needed *</label>
+                            <select id="service" name="service" required>
+                                <option value="">Select a service...</option>
+                                <option value="pentest">Python Pentesting & Scanning</option>
+                                <option value="webapp">Full-Stack Web App</option>
+                                <option value="mobile">Mobile App Development</option>
+                                <option value="cloud">Cloud & Hosting Setup</option>
+                                <option value="consult">Security Consultation</option>
+                                <option value="other">Other / Custom</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Pentesting Quick Select -->
+                    <div class="service-selector">
+                        <div class="service-card" data-service="pentest">
+                            <i class="fas fa-bug"></i>
+                            <h4>Pentesting</h4>
+                            <p>Scan • Exploit • Report</p>
+                        </div>
+                        <div class="service-card" data-service="webapp">
+                            <i class="fas fa-laptop-code"></i>
+                            <h4>Web App</h4>
+                            <p>React • Node • C#</p>
+                        </div>
+                        <div class="service-card" data-service="consult">
+                            <i class="fas fa-shield-alt"></i>
+                            <h4>Consulting</h4>
+                            <p>Strategy & Hardening</p>
+                        </div>
+                    </div>
+
+                    <div class="form-group full">
+                        <label for="message">Project Details *</label>
+                        <textarea id="message" name="message" required placeholder="Describe your project, target scope, timeline, and goals..."></textarea>
+                    </div>
+
+                    <button type="submit" class="submit-btn">
+                        <span>Send Secure Message</span>
+                        <div class="loader"></div>
+                        <i class="fas fa-paper-plane"></i>
+                    </button>
+
+                    <div class="alert" id="alertBox"></div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Kelvin Kadzenje</h3>
+                    <p>Full-Stack Software Developer</p>
+                    <p>Available for new opportunities</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Get In Touch</h4>
+                    <div class="social-links">
+                        <a href="mailto:kadzenje.kelvin6@gmail.com" class="social-link" title="Email">
+                            <i class="fas fa-envelope"></i>
+                        </a>
+                        <a href="https://wa.me/+27672911605" class="social-link" title="WhatsApp">
+                            <i class="fab fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.instagram.com/krlvin._/" class="social-link" title="Instagram">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>© 2025 Kelvin Kadzenje. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="script.js"></script>
+    <script src="enquiry.js"></script>
+</body>
+</html>
