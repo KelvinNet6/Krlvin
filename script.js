@@ -152,7 +152,7 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
- // ===================== 10. ENQUIRY FORM =====================
+// ===================== 10. ENQUIRY FORM =====================
 const form = document.getElementById('contactForm');
 if (form) {
     const alertBox   = document.getElementById('alertBox');
@@ -169,91 +169,58 @@ if (form) {
         });
     });
 
-    // ---- Real Formspree + SMTP Auto-Reply ----
+    // ---- Formspree + Gmail SMTP Auto-Reply ----
     form.addEventListener('submit', async e => {
         e.preventDefault();
 
         // Honeypot guard
         if (form.honeypot.value) return;
 
-        // UI: disable button + show loader
+        // UI
         submitBtn.disabled = true;
         btnText.textContent = 'Sending...';
         loader.style.display = 'inline-block';
         alertBox.style.display = 'none';
 
         const formData = new FormData(form);
-        const name = formData.get('name');
-        const email = formData.get('email');
+        const name    = formData.get('name');
+        const email   = formData.get('email');
         const service = formData.get('service');
         const message = formData.get('message');
 
         try {
-            // 1. Send to Formspree (you get the lead)
-            const fsResponse = await fetch(form.action, {
+            // 1. Formspree – you get the lead
+            const fsRes = await fetch(form.action, {
                 method: 'POST',
                 body: formData,
                 headers: { 'Accept': 'application/json' }
             });
-
-            if (!fsResponse.ok) {
-                const data = await fsResponse.json();
+            if (!fsRes.ok) {
+                const data = await fsRes.json();
                 throw new Error(data.error || 'Formspree failed');
             }
 
-            // 2. Send Auto-Reply via Gmail SMTP
-            await Email.send({
-                SecureToken: "sebtsrpvowwiskvw", 
-                To: email,
-                From: "kelvin.net6@gmail.com",
-                Subject: `Thanks ${name}! I Got Your Enquiry`,
-                Body: `
-                    <div style="font-family: 'Poppins', sans-serif; max-width: 600px; margin: auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
-                        <div style="background: #1a1a2e; color: white; padding: 30px; text-align: center;">
-                            <h1 style="margin: 0;">Thanks, ${name}!</h1>
-                            <p style="margin: 10px 0 0;">Your enquiry is received</p>
-                        </div>
-                        <div style="padding: 30px; line-height: 1.7; color: #333;">
-                            <p>Hey <strong>${name}</strong>,</p>
-                            <p>Got your message about <strong>${getServiceName(service)}</strong>. I’m reviewing it now and will reply <strong>within 24 hours</strong>.</p>
-                            <hr style="border: 1px solid #eee; margin: 20px 0;">
-                            <p><em>"${message}"</em></p>
-                            <hr style="border: 1px solid #eee; margin: 20px 0;">
-                            <p>Need it faster? <a href="https://wa.me/27672911605" style="color: #4e9af1; text-decoration: none;">WhatsApp me</a></p>
-                            <br>
-                            <p><strong>Kelvin (Krlvin)</strong><br>
-                            Full-Stack Dev & Pentester<br>
-                            <a href="https://krlvin.net" style="color: #4e9af1;">krlvin.net</a></p>
-                        </div>
-                        <div style="background: #16213e; color: #aaa; text-align: center; padding: 20px; font-size: 0.9em;">
-                            <p>This is an automated reply — reply to this email to respond.</p>
-                        </div>
-                    </div>
-                `
-            });
+            // 2. Gmail SMTP Auto-Reply
+            await sendSmtpReply({ name, email, service, message });
 
-            // ---- SUCCESS ----
+            // SUCCESS
             alertBox.textContent = "Message sent! Check your inbox for confirmation.";
             alertBox.className = 'alert success';
 
         } catch (err) {
             console.error("Form error:", err);
-            alertBox.textContent = err.message.includes('Formspree') 
-                ? 'Formspree error. Try again or use WhatsApp.' 
-                : 'Auto-reply failed. You still got the lead via email.';
+            alertBox.textContent = err.message.includes('Formspree')
+                ? 'Formspree error – try again or use WhatsApp.'
+                : 'Auto-reply failed (you still got the lead).';
             alertBox.className = 'alert error';
         } finally {
-            // ---- Always restore UI ----
             setTimeout(() => {
                 loader.style.display = 'none';
                 submitBtn.disabled = false;
                 btnText.textContent = 'Send Secure Message';
                 alertBox.style.display = 'block';
-
-                // Auto-hide alert
                 setTimeout(() => alertBox.style.display = 'none', 5000);
 
-                // Reset form & cards only on success
                 if (alertBox.classList.contains('success')) {
                     form.reset();
                     document.querySelectorAll('.service-card')
@@ -265,7 +232,48 @@ if (form) {
     });
 }
 
-// Helper: Convert service code to name
+/* ---------- Gmail SMTP Helper ---------- */
+function sendSmtpReply({ name, email, service, message }) {
+    return new Promise((resolve, reject) => {
+        Email.send({
+            Host: "smtp.gmail.com",
+            Username: "kelvin.net6@gmail.com",          
+            Password: "polmiftnboojpuqd",               
+            To: email,
+            From: "kelvin.net6@gmail.com",
+            Subject: `Thanks ${name}! I Got Your Enquiry`,
+            Body: `
+                <div style="font-family:'Poppins',sans-serif;max-width:600px;margin:auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.1);">
+                    <div style="background:#1a1a2e;color:#fff;padding:30px;text-align:center;">
+                        <h1 style="margin:0;">Thanks, ${name}!</h1>
+                        <p style="margin:10px 0 0;">Your enquiry is received</p>
+                    </div>
+                    <div style="padding:30px;line-height:1.7;color:#333;">
+                        <p>Hey <strong>${name}</strong>,</p>
+                        <p>Got your request for <strong>${getServiceName(service)}</strong>. I’ll reply <strong>within 24 hours</strong>.</p>
+                        <hr style="border:1px solid #eee;margin:20px 0;">
+                        <p><em>"${message}"</em></p>
+                        <hr style="border:1px solid #eee;margin:20px 0;">
+                        <p>Need it faster? <a href="https://wa.me/27672911605" style="color:#4e9af1;text-decoration:none;">WhatsApp me</a></p>
+                        <br>
+                        <p><strong>Kelvin (Krlvin)</strong><br>Full-Stack Dev & Pentester<br>
+                        <a href="https://krlvin.net" style="color:#4e9af1;">krlvin.net</a></p>
+                    </div>
+                    <div style="background:#16213e;color:#aaa;text-align:center;padding:20px;font-size:.9em;">
+                        <p>This is an automated reply — just hit reply to respond.</p>
+                    </div>
+                </div>
+            `
+        })
+        .then(() => resolve())
+        .catch(err => {
+            console.error("SMTP failed:", err);
+            reject(err);
+        });
+    });
+}
+
+/* ---------- Service-name helper ---------- */
 function getServiceName(code) {
     const map = {
         pentest: "Python Pentesting & Scanning",
