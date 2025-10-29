@@ -169,7 +169,7 @@ if (form) {
         });
     });
 
-    // ---- Formspree + Gmail SMTP Auto-Reply ----
+    // ---- Formspree + EmailJS Auto-Reply ----
     form.addEventListener('submit', async e => {
         e.preventDefault();
 
@@ -200,8 +200,8 @@ if (form) {
                 throw new Error(data.error || 'Formspree failed');
             }
 
-            // 2. Gmail SMTP Auto-Reply
-            await sendSmtpReply({ name, email, service, message });
+            // 2. EmailJS Auto-Reply
+            await sendEmailJSReply({ name, email, service, message });
 
             // SUCCESS
             alertBox.textContent = "Message sent! Check your inbox for confirmation.";
@@ -232,50 +232,29 @@ if (form) {
     });
 }
 
-/* ---------- Gmail SMTP Helper (WORKING) ---------- */
-function sendSmtpReply({ name, email, service, message }) {
-    return new Promise((resolve, reject) => {
-        Email.send({
-            Host: "smtp.gmail.com",
-            Port: 465,                              // REQUIRED FOR SSL
-            Username: "kelvin.net6@gmail.com",      // FULL EMAIL
-            Password: "polmiftnboojpuqd",           // YOUR APP PASSWORD (16 chars)
-            To: email,
-            From: "kelvin.net6@gmail.com",
-            Subject: `Thanks ${name}! I Got Your Enquiry`,
-            Body: `
-                <div style="font-family:'Poppins',sans-serif;max-width:600px;margin:auto;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 10px 30px rgba(0,0,0,.1);">
-                    <div style="background:#1a1a2e;color:#fff;padding:30px;text-align:center;">
-                        <h1 style="margin:0;">Thanks, ${name}!</h1>
-                        <p style="margin:10px 0 0;">Your enquiry is received</p>
-                    </div>
-                    <div style="padding:30px;line-height:1.7;color:#333;">
-                        <p>Hey <strong>${name}</strong>,</p>
-                        <p>Got your request for <strong>${getServiceName(service)}</strong>. I’ll reply <strong>within 24 hours</strong>.</p>
-                        <hr style="border:1px solid #eee;margin:20px 0;">
-                        <p><em>"${message}"</em></p>
-                        <hr style="border:1px solid #eee;margin:20px 0;">
-                        <p>Need it faster? <a href="https://wa.me/27672911605" style="color:#4e9af1;text-decoration:none;">WhatsApp me</a></p>
-                        <br>
-                        <p><strong>Kelvin (Krlvin)</strong><br>Full-Stack Dev & Pentester<br>
-                        <a href="https://krlvin.net" style="color:#4e9af1;">krlvin.net</a></p>
-                    </div>
-                    <div style="background:#16213e;color:#aaa;text-align:center;padding:20px;font-size:.9em;">
-                        <p>This is an automated reply — just hit reply to respond.</p>
-                    </div>
-                </div>
-            `
-        })
-        .then(() => {
-            console.log("SMTP auto-reply sent to:", email);
-            resolve();
+/* ---------- EmailJS Helper ---------- */
+function sendEmailJSReply({ name, email, service, message }) {
+    const params = {
+        to_name: name,
+        to_email: email,
+        service: getServiceName(service),
+        message: message
+    };
+
+    // Replace these with your actual EmailJS IDs
+    const SERVICE_ID = "gcugv868y7uiguy";
+    const TEMPLATE_ID = "efgdwfhuher6ee283ruf";
+
+    return emailjs.send(SERVICE_ID, TEMPLATE_ID, params)
+        .then(res => {
+            console.log("EmailJS auto-reply sent:", res.status, res.text);
         })
         .catch(err => {
-            console.error("SMTP FAILED:", err);
-            reject(err);
+            console.error("EmailJS FAILED:", err);
+            throw new Error("EmailJS failed");
         });
-    });
 }
+
 /* ---------- Service-name helper ---------- */
 function getServiceName(code) {
     const map = {
