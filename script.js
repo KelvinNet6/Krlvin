@@ -242,8 +242,8 @@ function sendEmailJSReply({ name, email, service, message }) {
     };
 
     // Replace these with your actual EmailJS IDs
-    const SERVICE_ID = "gcugv868y7uiguy";
-    const TEMPLATE_ID = "efgdwfhuher6ee283ruf";
+    const SERVICE_ID = "service_xn1q9x6";
+    const TEMPLATE_ID = "template_2fzlahl";
 
     return emailjs.send(SERVICE_ID, TEMPLATE_ID, params)
         .then(res => {
