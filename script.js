@@ -203,7 +203,7 @@ if (form) {
 
             // 2. Send Auto-Reply via Gmail SMTP
             await Email.send({
-                SecureToken: "YOUR_16_CHAR_APP_PASSWORD_HERE", // ← REPLACE THIS
+                SecureToken: "sebtsrpvowwiskvw", 
                 To: email,
                 From: "kadzenje.kelvin6@gmail.com",
                 Subject: `Thanks ${name}! I Got Your Enquiry`,
