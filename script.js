@@ -232,13 +232,14 @@ if (form) {
     });
 }
 
-/* ---------- Gmail SMTP Helper ---------- */
+/* ---------- Gmail SMTP Helper (WORKING) ---------- */
 function sendSmtpReply({ name, email, service, message }) {
     return new Promise((resolve, reject) => {
         Email.send({
             Host: "smtp.gmail.com",
-            Username: "kelvin.net6@gmail.com",          
-            Password: "polmiftnboojpuqd",               
+            Port: 465,                              // REQUIRED FOR SSL
+            Username: "kelvin.net6@gmail.com",      // FULL EMAIL
+            Password: "polmiftnboojpuqd",           // YOUR APP PASSWORD (16 chars)
             To: email,
             From: "kelvin.net6@gmail.com",
             Subject: `Thanks ${name}! I Got Your Enquiry`,
@@ -265,14 +266,16 @@ function sendSmtpReply({ name, email, service, message }) {
                 </div>
             `
         })
-        .then(() => resolve())
+        .then(() => {
+            console.log("SMTP auto-reply sent to:", email);
+            resolve();
+        })
         .catch(err => {
-            console.error("SMTP failed:", err);
+            console.error("SMTP FAILED:", err);
             reject(err);
         });
     });
 }
-
 /* ---------- Service-name helper ---------- */
 function getServiceName(code) {
     const map = {
