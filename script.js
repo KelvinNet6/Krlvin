@@ -205,7 +205,7 @@ if (form) {
             await Email.send({
                 SecureToken: "sebtsrpvowwiskvw", 
                 To: email,
-                From: "kadzenje.kelvin6@gmail.com",
+                From: "kelvin.net6@gmail.com",
                 Subject: `Thanks ${name}! I Got Your Enquiry`,
                 Body: `
                     <div style="font-family: 'Poppins', sans-serif; max-width: 600px; margin: auto; background: #fff; border-radius: 12px; overflow: hidden; box-shadow: 0 10px 30px rgba(0,0,0,0.1);">
