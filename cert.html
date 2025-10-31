@@ -2,14 +2,12 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Certificate – Hackev Python Pentesting Suite</title>
+    <title>Certificate – KRLVIN Python Pentesting Suite</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <style>
-        /* ---------- Reset & Base ---------- */
         *, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
         body { font-family: 'Georgia', serif; background:#f9f9f9; color:#222; line-height:1.5; }
 
-        /* ---------- Certificate Container ---------- */
         .cert { 
             max-width: 900px; margin: 2rem auto; padding: 3rem 2rem;
             background: #fff; border: 12px double #b8860b;
@@ -22,29 +20,40 @@
             opacity: .03;
         }
 
-        /* ---------- Header ---------- */
         .cert-header { text-align:center; margin-bottom:2rem; }
         .cert-header h1 { font-size:2.8rem; color:#b8860b; margin-bottom:.5rem; }
         .cert-header p { font-style:italic; color:#555; }
 
-        /* ---------- Body ---------- */
         .cert-body { text-align:center; font-size:1.2rem; }
         .cert-body .award { font-size:2rem; font-weight:bold; margin:1.5rem 0; color:#333; }
         .cert-body .recipient { font-size:1.8rem; margin:1rem 0; color:#b8860b; }
         .cert-body .tool-name { font-style:italic; }
 
-        /* ---------- Footer ---------- */
         .cert-footer { display:flex; justify-content:space-between; margin-top:4rem; font-size:1rem; }
-        .cert-footer .sig { text-align:center; }
-        .cert-footer .sig-line { border-top:2px solid #555; width:180px; margin: .5rem auto 0; }
+        .cert-footer .sig { text-align:center; position:relative; }
+        .cert-footer .sig-name { 
+            font-family: 'Dancing Script', cursive; 
+            font-size:1.6rem; 
+            color:#222; 
+            position:absolute; 
+            top:-28px; 
+            left:50%; 
+            transform:translateX(-50%); 
+            white-space:nowrap;
+        }
+        .cert-footer .sig-line { 
+            border-top:2px solid #555; 
+            width:220px; 
+            margin: .8rem auto 0; 
+        }
         .cert-footer .date { font-style:italic; color:#555; }
 
-        /* ---------- Print Styles ---------- */
         @media print {
             body { background:#fff; }
             .cert { border:8px double #b8860b; box-shadow:none; }
         }
     </style>
+    <link href="https://fonts.googleapis.com/css2?family=Dancing+Script:wght@700&display=swap" rel="stylesheet">
 </head>
 <body>
 
@@ -60,35 +69,25 @@
         <p>This certifies that</p>
         <div class="recipient"><strong>KRLVIN</strong></div>
         <p>has successfully designed, developed, and tested the</p>
-        <div class="award">HACKEV Python Pentesting Suite</div>
+        <div class="award">KRLVIN Python Pentesting Suite</div>
         <p class="tool-name">(Automated Scanner • Penetration Suite • Load-Testing • Real-time Monitor • Enumeration Toolkit)</p>
         <p>Meeting industry-grade standards for security, reliability, and ethical use.</p>
     </div>
 
-    <!-- Footer -->
+    <!-- Footer with Signature -->
     <div class="cert-footer">
         <div class="sig">
-            <p>_________________________</p>
-            <p class="sig-line"></p>
+            <div class="sig-name">krlvinnet</div>
+            <div class="sig-line"></div>
             <p>KRLVIN</p>
             <p>Developer & Owner</p>
         </div>
         <div class="date">
-            <p><strong>Date of Issue:</strong> <span id="issueDate"></span></p>
-            <p><strong>Verification Code:</strong> <span id="verifyCode"></span></p>
+            <p><strong>Date of Issue:</strong> 30 August 2025</p>
+            <p><strong>Verification Code:</strong> KRL-2025-08A</p>
         </div>
     </div>
 </div>
-
-<script>
-    // Auto-fill current date
-    const today = new Date().toLocaleDateString('en-GB', {day:'numeric', month:'long', year:'numeric'});
-    document.getElementById('issueDate').textContent = today;
-
-    // Simple unique verification code (you can replace with a real hash later)
-    const code = 'KRLVIN-' + Date.now().toString(36).toUpperCase().slice(-6);
-    document.getElementById('verifyCode').textContent = code;
-</script>
 
 </body>
 </html>
