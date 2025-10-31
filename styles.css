@@ -225,13 +225,6 @@ body {
 .section {
     padding: 100px 0;
     background: linear-gradient(135deg, #0a0a0a 0%, #1a1a2e 100%);
-    opacity: 0;
-    transform: translateY(40px);
-    transition: opacity 0.8s ease, transform 0.8s ease;
-}
-.section.active {
-    opacity: 1;
-    transform: translateY(0);
 }
 .section-title {
     font-size: clamp(2.5rem, 4vw, 3.5rem);
