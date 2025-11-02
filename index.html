@@ -10,6 +10,10 @@
     <link rel="stylesheet" href="styles.css">
 </head>
 <body>
+    <noscript>
+  <iframe src="https://www.googletagmanager.com/ns.html?id=GTM-TKMN2RJB"
+          height="0" width="0" style="display:none;visibility:hidden"></iframe>
+</noscript>
     <!-- Header with Background Video -->
     <header class="hero-header" id="home">
         <video autoplay muted loop playsinline class="hero-video">
@@ -437,5 +441,86 @@
         </div>
     </footer>
     <script src="script.js"></script>
+    <!-- place near end of <body> -->
+<div id="cookie-banner" style="position:fixed;bottom:12px;left:12px;right:12px;padding:14px;background:#111;color:#fff;border-radius:8px;display:flex;justify-content:space-between;gap:12px;align-items:center;z-index:9999;font-family:Arial">
+  <div>
+    This site uses cookies for analytics and performance. Do you accept?
+  </div>
+  <div style="display:flex;gap:8px">
+    <button id="cookie-accept" style="background:#2ecc71;border:none;padding:8px 12px;border-radius:6px;color:#fff;cursor:pointer">Accept</button>
+    <button id="cookie-decline" style="background:#e74c3c;border:none;padding:8px 12px;border-radius:6px;color:#fff;cursor:pointer">Decline</button>
+  </div>
+</div>
+<script>
+(function(){
+  // Configuration
+  const cookieName = 'site_cookie_consent';
+  const GTM_ID = 'GTM-TKMN2RJB';
+  const banner = document.getElementById('cookie-banner');
+  const acceptBtn = document.getElementById('cookie-accept');
+  const declineBtn = document.getElementById('cookie-decline');
+
+  // Helper: hide banner
+  function hideBanner() {
+    if (banner) banner.style.display = 'none';
+  }
+
+  // Helper: get cookie value
+  function getCookie(name) {
+    const match = document.cookie.split('; ').find(r => r.startsWith(name + '='));
+    return match ? decodeURIComponent(match.split('=')[1]) : null;
+  }
+
+  // Helper: set cookie
+  function setCookie(name, value, days = 365) {
+    const expires = new Date(Date.now() + days*864e5).toUTCString();
+    document.cookie = `${name}=${encodeURIComponent(value)}; expires=${expires}; path=/; Secure; SameSite=Lax`;
+  }
+
+  // Helper: dynamically load GTM
+  function loadGTM() {
+    if (window._gtmLoaded) return; // avoid duplicates
+    window._gtmLoaded = true;
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({ 'gtm.start': new Date().getTime(), event: 'gtm.js' });
+
+    const f = document.getElementsByTagName('script')[0];
+    const j = document.createElement('script');
+    j.async = true;
+    j.src = 'https://www.googletagmanager.com/gtm.js?id=' + GTM_ID;
+    f.parentNode.insertBefore(j, f);
+  }
+
+  // Check existing cookie on load
+  const consent = getCookie(cookieName);
+
+  if (consent === 'accepted') {
+    hideBanner();
+    loadGTM();
+  } else if (consent === 'declined') {
+    hideBanner();
+  }
+
+  // Event listeners for buttons
+  if (acceptBtn) {
+    acceptBtn.addEventListener('click', function(){
+      setCookie(cookieName, 'accepted');
+      hideBanner();
+      loadGTM();
+      // Optional: trigger custom event for other scripts
+      document.dispatchEvent(new Event('cookie-accepted'));
+    });
+  }
+
+  if (declineBtn) {
+    declineBtn.addEventListener('click', function(){
+      setCookie(cookieName, 'declined');
+      hideBanner();
+    });
+  }
+
+})();
+</script>
 </body>
 </html>
