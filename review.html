@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Reviews – krlvin.net</title>
+  <meta name="description" content="Read and leave reviews for krlvin.net tools and projects." />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <!-- Supabase CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <!-- hCaptcha -->
+  <script src="https://js.hcaptcha.com/1/api.js" async defer></script>
+
+  <style>
+    :root {
+      --bg: #0f172a;
+      --card: #1e293b;
+      --text: #e2e8f0;
+      --accent: #3b82f6;
+      --accent-hover: #2563eb;
+      --border: #334155;
+      --gray: #475569;
+      --success: #10b981;
+      --error: #ef4444;
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      padding: 2rem 1rem;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      background: var(--card);
+      border-radius: 16px;
+      padding: 2rem;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+      border: 1px solid var(--border);
+    }
+    h1 {
+      text-align: center;
+      color: #fff;
+      margin-bottom: 0.5rem;
+      font-weight: 700;
+      font-size: 2rem;
+    }
+    .subtitle {
+      text-align: center;
+      color: #94a3b8;
+      margin-bottom: 2rem;
+      font-size: 1rem;
+    }
+
+    /* Form */
+    .form-group { margin-bottom: 1.2rem; }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #cbd5e1;
+    }
+    input, textarea, select {
+      width: 100%;
+      padding: 0.75rem;
+      background: #334155;
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      color: #fff;
+      font-size: 1rem;
+      transition: border 0.2s;
+    }
+    input:focus, textarea:focus, select:focus {
+      outline: none;
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+    }
+    button {
+      background: var(--accent);
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s;
+      width: 100%;
+      font-size: 1rem;
+    }
+    button:hover { background: var(--accent-hover); }
+
+    /* Reviews */
+    .review {
+      background: #273549;
+      padding: 1.5rem;
+      border-radius: 12px;
+      margin-bottom: 1.5rem;
+      border: 1px solid var(--border);
+    }
+    .review-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 0.75rem;
+    }
+    .review-header strong {
+      color: #fff;
+      font-weight: 600;
+    }
+    .rating {
+      color: #fbbf24;
+      font-weight: bold;
+    }
+    .review p {
+      margin: 0.75rem 0;
+      color: #cbd5e1;
+    }
+
+    .actions {
+      display: flex;
+      gap: 1rem;
+      margin-top: 0.75rem;
+    }
+    .actions button {
+      background: none;
+      color: #94a3b8;
+      font-size: 1.1rem;
+      padding: 0.25rem 0.5rem;
+      border-radius: 6px;
+      width: auto;
+      transition: color 0.2s;
+    }
+    .actions button:hover {
+      color: var(--accent);
+    }
+    .like-count { margin-left: 0.25rem; font-weight: 600; }
+
+    .replies { margin-left: 2rem; margin-top: 1rem; }
+    .reply {
+      background: #334155;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-bottom: 0.75rem;
+      border: 1px solid var(--border);
+    }
+    .reply strong { color: #e2e8f0; }
+    .reply small { color: #94a3b8; }
+
+    .reply-form {
+      margin-top: 1rem;
+      display: none;
+      background: #334155;
+      padding: 1rem;
+      border-radius: 8px;
+      border: 1px solid var(--border);
+    }
+    .reply-form.show { display: block; }
+    .reply-form input,
+    .reply-form textarea {
+      margin-bottom: 0.75rem;
+    }
+
+    .success { color: var(--success); text-align: center; margin: 1rem 0; font-weight: 600; }
+    .error { color: var(--error); text-align: center; font-weight: 600; }
+
+    @media (max-width: 640px) {
+      .container { padding: 1.5rem; }
+      h1 { font-size: 1.75rem; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <h1>Client Reviews</h1>
+  <p class="subtitle">Leave feedback on any project or tool you've used.</p>
+
+  <!-- MAIN REVIEW FORM -->
+  <form id="reviewForm">
+    <div class="form-group">
+      <label>Name</label>
+      <input type="text" id="name" placeholder="Your name" required />
+    </div>
+    <div class="form-group">
+      <label>Rating</label>
+      <select id="rating" required>
+        <option value="">Select rating...</option>
+        <option value="5">5 Stars – Excellent</option>
+        <option value="4">4 Stars – Great</option>
+        <option value="3">3 Stars – Good</option>
+        <option value="2">2 Stars – Fair</option>
+        <option value="1">1 Star – Poor</option>
+      </select>
+    </div>
+    <div class="form-group">
+      <label>Review</label>
+      <textarea id="message" rows="4" placeholder="What did you think of the pentesting suite, car wash app, or any project?" required></textarea>
+    </div>
+    <div class="h-captcha" data-sitekey="YOUR_HCAPTCHA_SITEKEY"></div>
+    <button type="submit">Submit Review</button>
+    <div id="status"></div>
+  </form>
+
+  <!-- REVIEWS LIST -->
+  <div id="reviewsContainer" style="margin-top: 3rem;">
+    <p style="text-align:center; color:#94a3b8;">Loading reviews...</p>
+  </div>
+</div>
+
+<script>
+  // ==== CONFIG ====
+  const SUPABASE_URL = 'https://rrvrtbaiuspojtunkuxr.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJydnJ0YmFpdXNwb2p0dW5rdXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNDgzODksImV4cCI6MjA3NzcyNDM4OX0.qHQcbRA_F9_NtoFbIlNuwnCKev_Dc2Eu-xtKcZK3WdI';
+  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // ==== HELPERS ====
+  const escape = str => {
+    const div = document.createElement('div');
+    div.textContent = str;
+    return div.innerHTML;
+  };
+  const stars = n => 'Star'.repeat(n) + 'Star'.repeat(5-n);
+
+  // ==== LOAD REVIEWS + REPLIES ====
+  async function loadReviews() {
+    const { data: reviews, error } = await supabase
+      .from('reviews')
+      .select('*, review_replies(*)')
+      .eq('approved', true)
+      .order('created_at', { ascending: false });
+
+    if (error || !reviews?.length) {
+      document.getElementById('reviewsContainer').innerHTML = '<p style="text-align:center; color:#94a3b8;">No reviews yet. Be the first!</p>';
+      return;
+    }
+
+    const html = reviews.map(r => `
+      <div class="review" data-id="${r.id}">
+        <div class="review-header">
+          <strong>${escape(r.name)}</strong>
+          <span class="rating">${stars(r.rating)}</span>
+        </div>
+        <p>${escape(r.message)}</p>
+        <div class="actions">
+          <button onclick="likeReview('${r.id}', this)">Like <span class="like-count">${r.likes || 0}</span></button>
+          <button onclick="toggleReplyForm('${r.id}')">Reply</button>
+        </div>
+
+        <!-- REPLY FORM -->
+        <div class="reply-form" id="form-${r.id}">
+          <form onsubmit="submitReply(event, '${r.id}')">
+            <input type="text" placeholder="Your name" required class="reply-name" />
+            <textarea placeholder="Your reply..." required class="reply-msg" rows="2"></textarea>
+            <button type="submit">Send Reply</button>
+          </form>
+        </div>
+
+        <!-- REPLIES -->
+        <div class="replies">
+          ${r.review_replies?.filter(rep => rep.approved).map(rep => `
+            <div class="reply">
+              <strong>${escape(rep.name)}</strong> 
+              <small>${new Date(rep.created_at).toLocaleDateString()}</small><br>
+              ${escape(rep.message)}
+            </div>
+          `).join('') || ''}
+        </div>
+      </div>
+    `).join('');
+
+    document.getElementById('reviewsContainer').innerHTML = html;
+  }
+
+  // ==== LIKE ====
+  window.likeReview = async (reviewId, btn) => {
+    const countEl = btn.querySelector('.like-count');
+    const current = parseInt(countEl.textContent);
+    const { data, error } = await supabase
+      .from('reviews')
+      .update({ likes: current + 1 })
+      .eq('id', reviewId)
+      .select('likes')
+      .single();
+    if (!error) countEl.textContent = data.likes;
+  };
+
+  // ==== TOGGLE REPLY FORM ====
+  window.toggleReplyForm = id => {
+    const form = document.getElementById(`form-${id}`);
+    form.classList.toggle('show');
+  };
+
+  // ==== SUBMIT REPLY ====
+  window.submitReply = async (e, reviewId) => {
+    e.preventDefault();
+    const form = e.target;
+    const name = form.querySelector('.reply-name').value.trim();
+    const msg = form.querySelector('.reply-msg').value.trim();
+
+    const { error } = await supabase.from('review_replies').insert({
+      review_id: reviewId,
+      name, message: msg, approved: false
+    });
+
+    if (error) {
+      alert('Error: ' + error.message);
+    } else {
+      alert('Reply submitted – awaiting approval.');
+      form.reset();
+      form.parentElement.classList.remove('show');
+    }
+  };
+
+  // ==== SUBMIT MAIN REVIEW ====
+  document.getElementById('reviewForm').onsubmit = async e => {
+    e.preventDefault();
+    const status = document.getElementById('status');
+    const token = document.querySelector('.h-captcha')?.dataset?.response;
+    if (!token) {
+      status.innerHTML = '<p class="error">Please complete the CAPTCHA.</p>';
+      return;
+    }
+
+    const review = {
+      name: document.getElementById('name').value.trim(),
+      rating: +document.getElementById('rating').value,
+      message: document.getElementById('message').value.trim(),
+      approved: false,
+      likes: 0
+    };
+
+    const { error } = await supabase.from('reviews').insert(review);
+    if (error) {
+      status.innerHTML = `<p class="error">${error.message}</p>`;
+    } else {
+      status.innerHTML = '<p class="success">Review submitted! Awaiting approval.</p>';
+      e.target.reset();
+      setTimeout(() => status.innerHTML = '', 3000);
+    }
+  };
+
+  // ==== INIT ====
+  loadReviews();
+</script>
+
+</body>
+</html>
