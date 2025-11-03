@@ -22,6 +22,7 @@
       --gray: #475569;
       --success: #10b981;
       --error: #ef4444;
+      --gold: #fbbf24;
     }
     * { box-sizing: border-box; }
     body {
@@ -96,7 +97,11 @@
       margin-bottom: 0.75rem;
     }
     .review-header strong { color: #fff; font-weight: 600; }
-    .rating { color: #fbbf24; font-weight: bold; }
+    .rating {
+      color: var(--gold);
+      font-size: 1.1rem;
+      letter-spacing: 2px;
+    }
     .review p {
       margin: 0.75rem 0;
       color: #cbd5e1;
@@ -165,17 +170,31 @@
       border: 1px solid var(--border);
       position: relative;
     }
-   .close-btn {
-  position: absolute;
-  top: 1rem; right: 1rem;
-  background: none;
-  border: none;
-  color: #94a3b8;
-  font-size: 1.5rem;
-  cursor: pointer;
-}
-.close-btn:hover { color: #fff; }
-    
+
+    /* Smaller, Circular Close Button */
+    .close-btn {
+      position: absolute;
+      top: 1rem;
+      right: 1rem;
+      background: #334155;
+      border: none;
+      color: #94a3b8;
+      font-size: 1rem;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.2s;
+      font-weight: bold;
+    }
+    .close-btn:hover {
+      background: #475569;
+      color: #fff;
+    }
+
     .form-group { margin-bottom: 1.2rem; }
     label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #cbd5e1; }
     input, textarea, select {
@@ -204,15 +223,15 @@
       margin-top: 1rem;
     }
     .modal button:hover { background: var(--accent-hover); }
-    .success { color: var(--success); text-align: center; margin: 1rem 0; }
-    .error { color: var(--error); text-align: center; }
+    .success { color: var(--success); text-align: center; margin: 1rem 0; font-weight: 600; }
+    .error { color: var(--error); text-align: center; font-weight: 600; }
   </style>
 </head>
 <body>
 
 <div class="container">
   <h1>Client Reviews</h1>
-  <p class="subtitle">Real feedback from real Clients.</p>
+  <p class="subtitle">Real feedback from real clients.</p>
 
   <!-- Write Review Button -->
   <button class="write-btn" onclick="openModal()">Write a Review</button>
@@ -284,10 +303,12 @@
     document.getElementById('status').innerHTML = '';
   }
 
-  // Close on outside click
   modal.addEventListener('click', e => {
     if (e.target === modal) closeModal();
   });
+
+  // ==== REAL GOLD STARS ====
+  const stars = n => '★★★★★'.substring(0, n) + '☆☆☆☆☆'.substring(n);
 
   // ==== HELPERS ====
   const escape = str => {
@@ -295,7 +316,6 @@
     div.textContent = str;
     return div.innerHTML;
   };
-  const stars = n => 'Star'.repeat(n) + 'Star'.repeat(5-n);
 
   // ==== LOAD REVIEWS ====
   async function loadReviews() {
@@ -346,7 +366,7 @@
     container.innerHTML = html;
   }
 
-  // ==== LIKE, REPLY, SUBMIT (same as before) ====
+  // ==== LIKE, REPLY, SUBMIT ====
   window.likeReview = async (reviewId, btn) => {
     const countEl = btn.querySelector('.like-count');
     const current = parseInt(countEl.textContent);
