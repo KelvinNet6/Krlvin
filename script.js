@@ -349,21 +349,23 @@ function getServiceName(code) {
     return div.innerHTML;
   };
 
-  // ==== LOAD REVIEWS ====
-  async function loadReviews() {
-    const { data: reviews, error } = await supabase
-      .from('reviews')
-      .select('*, review_replies(*)')
-      .eq('approved', true)
-      .order('created_at', { ascending: false });
+  // ==== LOAD REVIEWS (FIXED) ====
+async function loadReviews() {
+  const { data: reviews, error } = await supabase
+    .from('reviews')
+    .select('*, review_replies(*)')
+    .eq('approved', true)
+    .order('created_at', { ascending: false });
 
-    const container = document.getElementById('reviewsContainer');
-    if (error || !reviews?.length) {
-      container.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#94a3b8;">No reviews yet. Be the first!</p>';
-      return;
-    }
+  const container = document.getElementById('reviewsContainer');
+  if (error || !reviews?.length) {
+    container.innerHTML = '<p style="grid-column:1/-1; text-align:center; color:#94a3b8;">No reviews yet. Be the first!</p>';
+    return;
+  }
 
-    const html = reviews.map(r => `
+  const html = reviews.map(r => {
+    const likes = r.likes ?? 0; // ← FIX: default to 0 if null
+    return `
       <div class="review" data-id="${r.id}">
         <div class="review-header">
           <strong>${escape(r.name)}</strong>
@@ -371,40 +373,34 @@ function getServiceName(code) {
         </div>
         <p>${escape(r.message)}</p>
         <div class="actions">
-          <button onclick="likeReview('${r.id}', this)">Like <span class="like-count">${r.likes || 0}</span></button>
+          <button onclick="likeReview('${r.id}', this)">Like <span class="like-count">${likes}</span></button>
           <button onclick="toggleReplyForm('${r.id}')">Reply</button>
         </div>
-
-        <div class="reply-form" id="form-${r.id}">
-          <form onsubmit="submitReply(event, '${r.id}')">
-            <input type="text" placeholder="Your name" required class="reply-name" />
-            <textarea placeholder="Your reply..." required class="reply-msg" rows="2"></textarea>
-            <button type="submit">Send Reply</button>
-          </form>
-        </div>
-
+        <div class="reply-form" id="form-${r.id}"></div>
         <div class="replies">
           ${r.review_replies?.filter(rep => rep.approved).map(rep => `
             <div class="reply">
-              <strong>${escape(rep.name)}</strong> 
+              <strong>${escape(rep.name)}</strong>
               <small>${new Date(rep.created_at).toLocaleDateString()}</small><br>
               ${escape(rep.message)}
             </div>
           `).join('') || ''}
         </div>
       </div>
-    `).join('');
+    `;
+  }).join('');
 
-    container.innerHTML = html;
-  }
+  container.innerHTML = html;
+}
 
-  // ==== LIKE, REPLY, SUBMIT ====
-  window.likeReview = async (reviewId, btn) => {
+// ==== LIKE REVIEW (FIXED) ====
+window.likeReview = async (reviewId, btn) => {
   const countEl = btn.querySelector('.like-count');
-  let current = parseInt(countEl.textContent) || 0;
+  const current = parseInt(countEl.textContent) || 0;
 
-  // Optimistic UI update
+  // Optimistic UI
   countEl.textContent = current + 1;
+  btn.disabled = true;
 
   try {
     const { data, error } = await supabase
@@ -415,16 +411,15 @@ function getServiceName(code) {
 
     if (error) throw error;
 
-    // Use returned value (array or single)
     const newLikes = Array.isArray(data) ? data[0]?.likes : data?.likes;
     if (newLikes !== undefined) {
       countEl.textContent = newLikes;
     }
   } catch (err) {
-    // Revert on error
-    countEl.textContent = current;
-    console.error('Like failed:', err);
+    countEl.textContent = current; // revert
     alert('Failed to like. Try again.');
+  } finally {
+    btn.disabled = false;
   }
 };
 
