@@ -393,30 +393,46 @@ async function loadReviews() {
   container.innerHTML = html;
 }
 
-// ==== LIKE REVIEW (FIXED) ====
 window.likeReview = async (reviewId, btn) => {
   const countEl = btn.querySelector('.like-count');
-  const current = parseInt(countEl.textContent) || 0;
+  const currentText = countEl.textContent.trim();
+  let current = parseInt(currentText, 10);
+
+  // Handle NaN, null, empty
+  if (isNaN(current) || current < 0) current = 0;
 
   // Optimistic UI
   countEl.textContent = current + 1;
   btn.disabled = true;
 
   try {
+    // Use upsert-like pattern: fetch first, then update
+    const { data: review, error: fetchError } = await supabase
+      .from('reviews')
+      .select('likes')
+      .eq('id', reviewId)
+      .single();
+
+    if (fetchError) throw fetchError;
+
+    const dbLikes = review?.likes ?? 0;
+    const newLikes = dbLikes + 1;
+
     const { data, error } = await supabase
       .from('reviews')
-      .update({ likes: current + 1 })
+      .update({ likes: newLikes })
       .eq('id', reviewId)
       .select('likes');
 
     if (error) throw error;
 
-    const newLikes = Array.isArray(data) ? data[0]?.likes : data?.likes;
-    if (newLikes !== undefined) {
-      countEl.textContent = newLikes;
-    }
+    const updatedLikes = Array.isArray(data) ? data[0]?.likes : data?.likes;
+    countEl.textContent = updatedLikes ?? newLikes;
+
   } catch (err) {
-    countEl.textContent = current; // revert
+    // Revert UI
+    countEl.textContent = current;
+    console.error('Like failed:', err);
     alert('Failed to like. Try again.');
   } finally {
     btn.disabled = false;
