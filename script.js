@@ -308,48 +308,46 @@ function getServiceName(code) {
     setTimeout(setActiveLinkOnScroll, 500);
 });
 // ==== CONFIG ====
-  const SUPABASE_URL = 'https://rrvrtbaiuspojtunkuxr.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJydnJ0YmFpdXNwb2p0dW5rdXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNDgzODksImV4cCI6MjA3NzcyNDM4OX0.qHQcbRA_F9_NtoFbIlNuwnCKev_Dc2Eu-xtKcZK3WdI';
-  const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const SUPABASE_URL = 'https://rrvrtbaiuspojtunkuxr.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJydnJ0YmFpdXNwb2p0dW5rdXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNDgzODksImV4cCI6MjA3NzcyNDM4OX0.qHQcbRA_F9_NtoFbIlNuwnCKev_Dc2Eu-xtKcZK3WdI';
+const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
-  // ==== YOUR FORMSPREE ENDPOINT (REPLACE) ====
-  const FORMSPREE_URL = 'https://formspree.io/f/xqagoldw';  
+// ==== FORMSPREE ====
+const FORMSPREE_URL = 'https://formspree.io/f/xqagoldw';
+let captchaToken = null;
 
-  let captchaToken = null;
+// ==== hCaptcha ====
+window.onCaptchaSuccess = function(token) {
+  captchaToken = token;
+  document.getElementById('submitBtn').disabled = false;
+};
 
-  // ==== hCaptcha ====
-  window.onCaptchaSuccess = function(token) {
-    captchaToken = token;
-    document.getElementById('submitBtn').disabled = false;
-  };
+// ==== MODAL ====
+const modal = document.getElementById('reviewModal');
+function openModal() { modal.classList.add('show'); }
+function closeModal() {
+  modal.classList.remove('show');
+  document.getElementById('reviewForm').reset();
+  document.getElementById('submitBtn').disabled = true;
+  hcaptcha.reset();
+  captchaToken = null;
+  document.getElementById('status').innerHTML = '';
+}
+modal.addEventListener('click', e => {
+  if (e.target === modal) closeModal();
+});
 
-  // ==== MODAL ====
-  const modal = document.getElementById('reviewModal');
-  function openModal() { modal.classList.add('show'); }
-  function closeModal() {
-    modal.classList.remove('show');
-    document.getElementById('reviewForm').reset();
-    document.getElementById('submitBtn').disabled = true;
-    hcaptcha.reset();
-    captchaToken = null;
-    document.getElementById('status').innerHTML = '';
-  }
+// ==== STARS ====
+const stars = n => '★★★★★'.substring(0, n) + '☆☆☆☆☆'.substring(n);
 
-  modal.addEventListener('click', e => {
-    if (e.target === modal) closeModal();
-  });
+// ==== ESCAPE HTML ====
+const escape = str => {
+  const div = document.createElement('div');
+  div.textContent = str;
+  return div.innerHTML;
+};
 
-  // ==== REAL GOLD STARS ====
-  const stars = n => '★★★★★'.substring(0, n) + '☆☆☆☆☆'.substring(n);
-
-  // ==== HELPERS ====
-  const escape = str => {
-    const div = document.createElement('div');
-    div.textContent = str;
-    return div.innerHTML;
-  };
-
-  // ==== LOAD REVIEWS (FIXED) ====
+// ==== LOAD REVIEWS ====
 async function loadReviews() {
   const { data: reviews, error } = await supabase
     .from('reviews')
@@ -364,7 +362,7 @@ async function loadReviews() {
   }
 
   const html = reviews.map(r => {
-    const likes = r.likes ?? 0; // ← FIX: default to 0 if null
+    const likes = r.likes ?? 0;
     return `
       <div class="review" data-id="${r.id}">
         <div class="review-header">
@@ -373,7 +371,9 @@ async function loadReviews() {
         </div>
         <p>${escape(r.message)}</p>
         <div class="actions">
-          <button onclick="likeReview('${r.id}', this)">Like <span class="like-count">${likes}</span></button>
+          <button onclick="likeReview('${r.id}', this)" class="like-btn">
+            Like <span class="like-count">${likes}</span>
+          </button>
           <button onclick="toggleReplyForm('${r.id}')">Reply</button>
         </div>
         <div class="reply-form" id="form-${r.id}"></div>
@@ -393,44 +393,40 @@ async function loadReviews() {
   container.innerHTML = html;
 }
 
+// ==== LIKE REVIEW – FIXED & RELIABLE ====
 window.likeReview = async (reviewId, btn) => {
   const countEl = btn.querySelector('.like-count');
-  const currentText = countEl.textContent.trim();
-  let current = parseInt(currentText, 10);
-
-  // Handle NaN, null, empty
-  if (isNaN(current) || current < 0) current = 0;
+  const current = parseInt(countEl.textContent, 10) || 0;
 
   // Optimistic UI
   countEl.textContent = current + 1;
   btn.disabled = true;
 
   try {
-    // Use upsert-like pattern: fetch first, then update
-    const { data: review, error: fetchError } = await supabase
+    // Fetch current DB value
+    const { data: currentRow, error: fetchError } = await supabase
       .from('reviews')
       .select('likes')
       .eq('id', reviewId)
       .single();
 
-    if (fetchError) throw fetchError;
+    if (fetchError && fetchError.code !== 'PGRST116') throw fetchError; // PGRST116 = not found
 
-    const dbLikes = review?.likes ?? 0;
+    const dbLikes = currentRow?.likes ?? 0;
     const newLikes = dbLikes + 1;
 
-    const { data, error } = await supabase
+    // Update
+    const { error: updateError } = await supabase
       .from('reviews')
       .update({ likes: newLikes })
-      .eq('id', reviewId)
-      .select('likes');
+      .eq('id', reviewId);
 
-    if (error) throw error;
+    if (updateError) throw updateError;
 
-    const updatedLikes = Array.isArray(data) ? data[0]?.likes : data?.likes;
-    countEl.textContent = updatedLikes ?? newLikes;
-
+    // Success – UI already updated
+    console.log(`Like saved: ${newLikes}`);
   } catch (err) {
-    // Revert UI
+    // Revert on any error
     countEl.textContent = current;
     console.error('Like failed:', err);
     alert('Failed to like. Try again.');
@@ -439,73 +435,106 @@ window.likeReview = async (reviewId, btn) => {
   }
 };
 
-  window.toggleReplyForm = id => {
-    const form = document.getElementById(`form-${id}`);
-    form.classList.toggle('show');
+// ==== REPLY FORM TOGGLE ====
+window.toggleReplyForm = id => {
+  const form = document.getElementById(`form-${id}`);
+  form.classList.toggle('show');
+};
+
+// ==== SUBMIT REPLY ====
+window.submitReply = async (e, reviewId) => {
+  e.preventDefault();
+  const form = e.target;
+  const name = form.querySelector('.reply-name').value.trim();
+  const msg = form.querySelector('.reply-msg').value.trim();
+
+  const { error } = await supabase.from('review_replies').insert({
+    review_id: reviewId, name, message: msg, approved: false
+  });
+
+  if (error) {
+    alert('Error: ' + error.message);
+  } else {
+    alert('Reply submitted – awaiting approval.');
+    form.reset();
+    form.parentElement.classList.remove('show');
+  }
+};
+
+// ==== SUBMIT REVIEW FORM ====
+document.getElementById('reviewForm').onsubmit = async e => {
+  e.preventDefault();
+  const status = document.getElementById('status');
+  if (!captchaToken) {
+    status.innerHTML = '<p class="error">Please complete the CAPTCHA.</p>';
+    return;
+  }
+
+  // Formspree email
+  const formData = new FormData(e.target);
+  formData.append('_subject', 'New Review on krlvin.net');
+  formData.append('_next', '');
+  fetch(FORMSPREE_URL, {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  }).catch(console.error);
+
+  // Supabase insert
+  const review = {
+    name: document.getElementById('name').value.trim(),
+    rating: +document.getElementById('rating').value,
+    message: document.getElementById('message').value.trim(),
+    approved: false,
+    likes: 0
   };
 
-  window.submitReply = async (e, reviewId) => {
-    e.preventDefault();
-    const form = e.target;
-    const name = form.querySelector('.reply-name').value.trim();
-    const msg = form.querySelector('.reply-msg').value.trim();
+  const { error } = await supabase.from('reviews').insert(review);
+  if (error) {
+    status.innerHTML = `<p class="error">${error.message}</p>`;
+  } else {
+    status.innerHTML = '<p class="success">Review submitted! Awaiting approval.</p>';
+    setTimeout(closeModal, 1500);
+  }
+};
 
-    const { error } = await supabase.from('review_replies').insert({
-      review_id: reviewId, name, message: msg, approved: false
-    });
-
-    if (error) alert('Error: ' + error.message);
-    else {
-      alert('Reply submitted – awaiting approval.');
-      form.reset();
-      form.parentElement.classList.remove('show');
-    }
-  };
-
-  document.getElementById('reviewForm').onsubmit = async e => {
-    e.preventDefault();
-    const status = document.getElementById('status');
-    if (!captchaToken) {
-      status.innerHTML = '<p class="error">Please complete the CAPTCHA.</p>';
-      return;
-    }
-
-    // ==== FORMSPREE SUBMISSION (for email) ====
-    const formData = new FormData(e.target);
-    formData.append('_subject', 'New Review on krlvin.net');
-    formData.append('_next', '');  // No redirect — stay in modal
-
-    fetch(FORMSPREE_URL, {
-      method: 'POST',
-      body: formData,
-      headers: {
-        'Accept': 'application/json'
+// ==== SUPABASE REALTIME – LIVE LIKES & REPLIES ====
+const channel = supabase
+  .channel('reviews-channel')
+  .on('postgres_changes', 
+    { event: 'UPDATE', schema: 'public', table: 'reviews' }, 
+    payload => {
+      const updated = payload.new;
+      const reviewEl = document.querySelector(`[data-id="${updated.id}"]`);
+      if (reviewEl) {
+        const countEl = reviewEl.querySelector('.like-count');
+        if (countEl) countEl.textContent = updated.likes ?? 0;
       }
-    }).then(response => {
-      if (response.ok) {
-        console.log('Email sent via Formspree!');
-      } else {
-        console.error('Formspree error');
-      }
-    }).catch(error => console.error('Error:', error));
-
-    // ==== SUPABASE SUBMISSION (for storage) ====
-    const review = {
-      name: document.getElementById('name').value.trim(),
-      rating: +document.getElementById('rating').value,
-      message: document.getElementById('message').value.trim(),
-      approved: false,
-      likes: 0
-    };
-
-    const { error } = await supabase.from('reviews').insert(review);
-    if (error) {
-      status.innerHTML = `<p class="error">${error.message}</p>`;
-    } else {
-      status.innerHTML = '<p class="success">Review submitted! Awaiting approval.</p>';
-      setTimeout(closeModal, 1500);
     }
-  };
+  )
+  .on('postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'review_replies' },
+    payload => {
+      const reply = payload.new;
+      if (!reply.approved) return;
 
-  // ==== INIT ====
-  loadReviews();
+      const reviewEl = document.querySelector(`[data-id="${reply.review_id}"]`);
+      if (!reviewEl) return;
+
+      const repliesContainer = reviewEl.querySelector('.replies');
+      const newReplyHTML = `
+        <div class="reply">
+          <strong>${escape(reply.name)}</strong>
+          <small>${new Date(reply.created_at).toLocaleDateString()}</small><br>
+          ${escape(reply.message)}
+        </div>
+      `;
+      repliesContainer.insertAdjacentHTML('beforeend', newReplyHTML);
+    }
+  )
+  .subscribe((status) => {
+    console.log('Realtime status:', status);
+  });
+
+// ==== INIT ====
+loadReviews();
