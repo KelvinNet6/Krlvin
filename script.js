@@ -400,16 +400,33 @@ function getServiceName(code) {
 
   // ==== LIKE, REPLY, SUBMIT ====
   window.likeReview = async (reviewId, btn) => {
-    const countEl = btn.querySelector('.like-count');
-    const current = parseInt(countEl.textContent);
+  const countEl = btn.querySelector('.like-count');
+  let current = parseInt(countEl.textContent) || 0;
+
+  // Optimistic UI update
+  countEl.textContent = current + 1;
+
+  try {
     const { data, error } = await supabase
       .from('reviews')
       .update({ likes: current + 1 })
       .eq('id', reviewId)
-      .select('likes')
-      .single();
-    if (!error) countEl.textContent = data.likes;
-  };
+      .select('likes');
+
+    if (error) throw error;
+
+    // Use returned value (array or single)
+    const newLikes = Array.isArray(data) ? data[0]?.likes : data?.likes;
+    if (newLikes !== undefined) {
+      countEl.textContent = newLikes;
+    }
+  } catch (err) {
+    // Revert on error
+    countEl.textContent = current;
+    console.error('Like failed:', err);
+    alert('Failed to like. Try again.');
+  }
+};
 
   window.toggleReplyForm = id => {
     const form = document.getElementById(`form-${id}`);
