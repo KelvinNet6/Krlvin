@@ -147,39 +147,50 @@
       padding: 1rem;
     }
     .modal.show { display: flex; }
-    .modal-content {
-      background: var(--card);
-      border-radius: 16px;
-      padding: 2rem;
-      width: 100%;
-      max-width: 500px;
-      border: 1px solid var(--border);
-      position: relative;
-    }
+    /* MODAL CONTENT - Increase top padding to make space for close button */
+.modal-content {
+  background: var(--card);
+  border-radius: 16px;
+  padding: 3rem 2rem 2rem; /* top: 3rem, sides: 2rem, bottom: 2rem */
+  width: 100%;
+  max-width: 500px;
+  border: 1px solid var(--border);
+  position: relative;
+}
 
-    /* Smaller, Circular Close Button */
-    .close-btn {
-      position: absolute;
-      top: 1rem;
-      right: 1rem;
-      background: #334155;
-      border: none;
-      color: #94a3b8;
-      font-size: 1rem;
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      cursor: pointer;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      transition: all 0.2s;
-      font-weight: bold;
-    }
-    .close-btn:hover {
-      background: #475569;
-      color: #fff;
-    }
+/* CLOSE BUTTON - Perfect circle, no overflow */
+.close-btn {
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  background: #334155;
+  border: none;
+  color: #94a3b8;
+  font-size: 1.25rem;
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  font-weight: bold;
+  line-height: 1;
+  padding: 0; /* Critical: removes default button padding */
+  z-index: 10;
+}
+
+.close-btn:hover {
+  background: #475569;
+  color: #fff;
+  transform: scale(1.05);
+}
+
+/* Optional: Use × symbol without text inside */
+.close-btn::before {
+  content: '×';
+}
 
     .form-group { margin-bottom: 1.2rem; }
     label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #cbd5e1; }
