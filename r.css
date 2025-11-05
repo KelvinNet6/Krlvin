@@ -172,7 +172,7 @@
   font-weight: 300;
   line-height: 1;
   padding: 0;
-  visibility: Hiden;
+  display: none;
 }
 
 .close-btn:hover {
