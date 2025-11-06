@@ -436,20 +436,48 @@ window.likeReview = async (reviewId, btn) => {
 };
 
 // ==== REPLY FORM TOGGLE ====
+// Dynamically shows or hides a working reply form
 window.toggleReplyForm = id => {
-  const form = document.getElementById(`form-${id}`);
-  form.classList.toggle('show');
+  const formContainer = document.getElementById(`form-${id}`);
+
+  // Hide if already visible
+  if (formContainer.classList.contains('show')) {
+    formContainer.classList.remove('show');
+    return;
+  }
+
+  // Create the reply form markup if not already created
+  if (!formContainer.querySelector('form')) {
+    formContainer.innerHTML = `
+      <form onsubmit="submitReply(event, '${id}')">
+        <input type="text" class="reply-name" placeholder="Your name" required>
+        <textarea class="reply-msg" placeholder="Your reply..." required></textarea>
+        <button type="submit" class="reply-submit-btn">Send Reply</button>
+      </form>
+    `;
+  }
+
+  formContainer.classList.add('show');
 };
 
 // ==== SUBMIT REPLY ====
+// Handles sending reply to Supabase and UI reset
 window.submitReply = async (e, reviewId) => {
   e.preventDefault();
   const form = e.target;
   const name = form.querySelector('.reply-name').value.trim();
   const msg = form.querySelector('.reply-msg').value.trim();
 
+  if (!name || !msg) {
+    alert('Please enter your name and message.');
+    return;
+  }
+
   const { error } = await supabase.from('review_replies').insert({
-    review_id: reviewId, name, message: msg, approved: false
+    review_id: reviewId,
+    name,
+    message: msg,
+    approved: false // change to true if you want replies visible immediately
   });
 
   if (error) {
@@ -460,7 +488,6 @@ window.submitReply = async (e, reviewId) => {
     form.parentElement.classList.remove('show');
   }
 };
-
 // ==== SUBMIT REVIEW FORM ====
 document.getElementById('reviewForm').onsubmit = async e => {
   e.preventDefault();
