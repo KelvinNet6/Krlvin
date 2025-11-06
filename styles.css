@@ -1364,11 +1364,12 @@ select {
   from { transform: translateY(30px); opacity: 0; }
   to { transform: translateY(0); opacity: 1; }
 }
+
 /* What I Do Section */
-.section.what-i-do {
+.what-i-do {
     padding: 60px 20px;
-    background-color: #f9f9f9;
     text-align: center;
+    background-color: #f9f9f9;
 }
 
 .section-title {
@@ -1378,40 +1379,38 @@ select {
 
 .section-subtitle {
     font-size: 1.1rem;
-    color: #666;
-    margin-bottom: 40px;
+    margin-bottom: 50px;
+    color: #555;
 }
 
-/* Grid */
+/* Grid Layout */
 .what-i-do-grid {
     display: grid;
+    grid-template-columns: repeat(3, 1fr);
     gap: 30px;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    max-width: 1200px;
+    margin: 0 auto;
 }
 
-/* Individual item */
+/* Card Items */
 .what-i-do-item {
     background-color: #fff;
-    border-radius: 10px;
     padding: 30px 20px;
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-    transition: transform 0.3s, box-shadow 0.3s;
-}
-
-.what-i-do-item:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 20px rgba(0,0,0,0.15);
+    border-radius: 12px;
+    box-shadow: 0 6px 20px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
 .what-i-do-item i {
     font-size: 2.5rem;
-    color: #4f46e5; /* Primary color */
-    margin-bottom: 15px;
+    color: #007bff;
+    margin-bottom: 20px;
+    display: inline-block;
 }
 
 .what-i-do-item h3 {
-    font-size: 1.25rem;
-    margin-bottom: 10px;
+    font-size: 1.4rem;
+    margin-bottom: 15px;
 }
 
 .what-i-do-item p {
@@ -1419,19 +1418,21 @@ select {
     color: #555;
 }
 
-/* Responsive tweaks */
-@media (max-width: 768px) {
+/* Hover Effect */
+.what-i-do-item:hover {
+    transform: translateY(-8px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* Responsive */
+@media (max-width: 992px) {
     .what-i-do-grid {
-        grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+        grid-template-columns: repeat(2, 1fr);
     }
 }
 
-@media (max-width: 480px) {
-    .section-title {
-        font-size: 2rem;
-    }
-
-    .what-i-do-item {
-        padding: 20px 15px;
+@media (max-width: 600px) {
+    .what-i-do-grid {
+        grid-template-columns: 1fr;
     }
 }
