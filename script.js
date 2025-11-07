@@ -326,7 +326,10 @@ const btn = document.getElementById('submitBtn');
 const status = document.getElementById('status');
 
 /* ==== CAPTCHA ==== */
-window.onCaptchaSuccess = t => { captchaToken = t; btn.disabled = false; };
+window.onCaptchaSuccess = t => { 
+  captchaToken = t; 
+  btn.disabled = false; 
+};
 
 /* ==== MODAL ==== */
 function openModal() { modal.classList.add('show'); }
@@ -349,12 +352,9 @@ const esc = s => { const d = document.createElement('div'); d.textContent = s; r
 async function uploadAvatar(file, id) {
   const ext = file.name.split('.').pop().toLowerCase();
   const name = `${id}.${ext}`;
-
-  // Upload file
   const { error } = await supabase.storage.from('avatars').upload(name, file, { upsert: true });
   if (error) throw error;
 
-  // Get public URL
   const { data } = supabase.storage.from('avatars').getPublicUrl(name);
   return data.publicUrl;
 }
@@ -373,7 +373,10 @@ async function sendClientEmail(name, email) {
 /* ==== SUBMIT REVIEW ==== */
 form.onsubmit = async e => {
   e.preventDefault();
-  if (!captchaToken) { status.innerHTML = '<p class="error">Complete CAPTCHA.</p>'; return; }
+  if (!captchaToken) { 
+    status.innerHTML = '<p class="error">Complete CAPTCHA.</p>'; 
+    return; 
+  }
 
   btn.disabled = true;
   btn.textContent = 'Submitting…';
@@ -384,14 +387,25 @@ form.onsubmit = async e => {
   const message = document.getElementById('message').value.trim();
   const file = document.getElementById('avatar').files[0];
 
-  if (!file) { status.innerHTML = '<p class="error">Upload a picture.</p>'; btn.disabled = false; btn.textContent = 'Submit Review'; return; }
-  if (file.size > 2*1024*1024) { status.innerHTML = '<p class="error">Image ≤ 2 MB.</p>'; btn.disabled = false; btn.textContent = 'Submit Review'; return; }
+  if (!file) { 
+    status.innerHTML = '<p class="error">Upload a picture.</p>'; 
+    btn.disabled = false; 
+    btn.textContent = 'Submit Review'; 
+    return; 
+  }
+
+  if (file.size > 2*1024*1024) { 
+    status.innerHTML = '<p class="error">Image ≤ 2 MB.</p>'; 
+    btn.disabled = false; 
+    btn.textContent = 'Submit Review'; 
+    return; 
+  }
 
   try {
-    // 1. Insert review
+    // 1. Insert review with approved: true
     const { data, error: insErr } = await supabase
       .from('reviews')
-      .insert({ name, email, rating, message, approved: false, likes: 0 })
+      .insert({ name, email, rating, message, approved: true, likes: 0 })
       .select();
     if (insErr) throw insErr;
     if (!data?.[0]) throw new Error('Failed to create review');
@@ -416,10 +430,12 @@ form.onsubmit = async e => {
     await sendClientEmail(name, email);
 
     status.innerHTML = '<p class="success">Thank you! Review received.</p>';
+
     setTimeout(() => {
       closeModal();
-      loadReviews(); // Refresh reviews
+      loadReviews(); // Refresh reviews immediately
     }, 1800);
+
   } catch (err) {
     console.error('Submit error:', err);
     status.innerHTML = `<p class="error">${err.message || 'Something went wrong'}</p>`;
@@ -447,14 +463,10 @@ async function loadReviews() {
   container.innerHTML = reviews.map(r => {
     const likes = r.likes ?? 0;
     const avatar = r.avatar_url || 'https://via.placeholder.com/40?text=?';
-
     return `
       <div class="review" data-id="${r.id}">
         <div class="review-header">
-          <img src="${avatar}" 
-               alt="${esc(r.name)}" 
-               class="review-avatar"
-               onerror="this.src='https://via.placeholder.com/40?text=?'">
+          <img src="${avatar}" alt="${esc(r.name)}" class="review-avatar" onerror="this.src='https://via.placeholder.com/40?text=?'">
           <div>
             <strong>${esc(r.name)}</strong>
             <span class="rating">${stars(r.rating)}</span>
@@ -537,4 +549,5 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.write-btn')?.addEventListener('click', openModal);
   loadReviews();
 });
+
 
