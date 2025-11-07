@@ -234,3 +234,31 @@
   display: flex;
   flex-direction: column;
 }
+/* Split form into two columns */
+#reviewForm {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+}
+
+/* Left and Right column */
+.form-left,
+.form-right {
+  flex: 1 1 45%;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Make full-width on mobile */
+@media (max-width: 640px) {
+  .form-left,
+  .form-right {
+    flex: 1 1 100%;
+  }
+}
+
+/* Optional: add spacing between input fields inside columns */
+.form-left .form-group,
+.form-right .form-group {
+  margin-bottom: 1rem;
+}
