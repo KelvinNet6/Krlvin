@@ -421,14 +421,23 @@ form.onsubmit = async e => {
       .eq('id', review.id);
     if (updErr) throw updErr;
 
-    // 4. Notify admin
-    const fd = new FormData(e.target);
-    fd.append('_subject', 'New Review');
-    await sendAdminEmail(fd);
+    // 4. Notify admin (log errors but don’t fail)
+    try {
+      const fd = new FormData(e.target);
+      fd.append('_subject', 'New Review');
+      await sendAdminEmail(fd);
+    } catch(err) {
+      console.warn('Admin email failed:', err);
+    }
 
-    // 5. Thank client
-    await sendClientEmail(name, email);
+    // 5. Thank client (log errors but don’t fail)
+    try {
+      await sendClientEmail(name, email);
+    } catch(err) {
+      console.warn('Client email failed:', err);
+    }
 
+    // 6. Show success
     status.innerHTML = '<p class="success">Thank you! Review received.</p>';
 
     setTimeout(() => {
