@@ -33,45 +33,50 @@
   <div class="modal-content">
     <button class="close-btn" aria-label="Close modal"></button>
     <h2 style="margin-top:0; color:#fff; text-align:center;">Leave a Review</h2>
+<form id="reviewForm">
+  <div class="form-left">
+    <div class="form-group">
+      <label>Name *</label>
+      <input type="text" name="_name" id="name" placeholder="Your name" required />
+    </div>
 
-    <form id="reviewForm">
-  <div class="form-group">
-    <label>Name *</label>
-    <input type="text" name="_name" id="name" placeholder="Your name" required />
+    <div class="form-group">
+      <label>Email *</label>
+      <input type="email" name="_replyto" id="email" placeholder="you@example.com" required />
+    </div>
+
+    <div class="form-group">
+      <label>Profile Picture *</label>
+      <input type="file" id="avatar" accept="image/*" required />
+      <small style="color:#94a3b8;">Max 2MB, JPG/PNG/WebP</small>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label>Email *</label>
-    <input type="email" name="_replyto" id="email" placeholder="you@example.com" required />
+  <div class="form-right">
+    <div class="form-group">
+      <label>Rating</label>
+      <select name="_rating" id="rating" required>
+        <option value="">Select rating...</option>
+        <option value="5">5 Stars – Excellent</option>
+        <option value="4">4 Stars – Great</option>
+        <option value="3">3 Stars – Good</option>
+        <option value="2">2 Stars – Fair</option>
+        <option value="1">1 Star – Poor</option>
+      </select>
+    </div>
+
+    <div class="form-group">
+      <label>Review</label>
+      <textarea name="_message" id="message" rows="6" placeholder="What did you think?" required></textarea>
+    </div>
   </div>
 
-  <div class="form-group">
-    <label>Profile Picture *</label>
-    <input type="file" id="avatar" accept="image/*" required />
-    <small style="color:#94a3b8;">Max 2MB, JPG/PNG/WebP</small>
-  </div>
-
-  <div class="form-group">
-    <label>Rating</label>
-    <select name="_rating" id="rating" required>
-      <option value="">Select rating...</option>
-      <option value="5">5 Stars – Excellent</option>
-      <option value="4">4 Stars – Great</option>
-      <option value="3">3 Stars – Good</option>
-      <option value="2">2 Stars – Fair</option>
-      <option value="1">1 Star – Poor</option>
-    </select>
-  </div>
-
-  <div class="form-group">
-    <label>Review</label>
-    <textarea name="_message" id="message" rows="4" placeholder="What did you think?" required></textarea>
-  </div>
-
+  <div style="flex-basis:100%;"></div> <!-- Ensure hCaptcha and button take full width -->
   <div class="h-captcha" data-sitekey="1e0aafc6-dea0-409c-851a-0314d7b2a282" data-callback="onCaptchaSuccess"></div>
   <button type="submit" id="submitBtn" disabled>Submit Review</button>
   <div id="status"></div>
 </form>
+
   </div>
 </div>
 
