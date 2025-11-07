@@ -509,7 +509,7 @@ window.submitReply = async (e, id) => {
   const name = f.querySelector('.reply-name').value.trim();
   const msg = f.querySelector('.reply-msg').value.trim();
   if (!name || !msg) return;
-  const { error } = await supabase.from('review_replies').insert({ review_id: id, name, message: msg, approved: false });
+  const { error } = await supabase.from('review_replies').insert({ review_id: id, name, message: msg, approved: true });
   if (error) alert('Error: ' + error.message);
   else { alert('Reply sent!'); f.reset(); f.parentElement.classList.remove('show'); }
 };
