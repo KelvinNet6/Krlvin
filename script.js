@@ -392,7 +392,7 @@ reviewForm.onsubmit = async e => {
   }
 
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Uploading…';
+  submitBtn.textContent = 'Submitting…';
 
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -415,12 +415,16 @@ reviewForm.onsubmit = async e => {
   }
 
   try {
-    // 1. Insert review
-    const { data: [review], error: insErr } = await supabase
+    // 1. Insert review WITHOUT .select() first
+    const { data, error: insErr } = await supabase
       .from('reviews')
       .insert({ name, email, rating, message, approved: false, likes: 0 })
-      .select();
+      .select(); // ← This returns array
+
     if (insErr) throw insErr;
+    if (!data || data.length === 0) throw new Error("Review not created");
+
+    const review = data[0]; // ← Safe access
 
     // 2. Upload avatar
     const avatarUrl = await uploadAvatar(avatarFile, review.id);
@@ -430,20 +434,25 @@ reviewForm.onsubmit = async e => {
       .from('reviews')
       .update({ avatar_url: avatarUrl })
       .eq('id', review.id);
+
     if (updErr) throw updErr;
 
     // 4. Send to Formspree (you get notified)
     const formData = new FormData(e.target);
-    formData.append('_subject', 'New Review Awaiting Approval');
-    await sendToFormspree(formData);
+    formData.append('_subject', 'New Review Received');
+    await fetch(FORMSPREE_URL, {
+      method: 'POST',
+      body: formData,
+      headers: { 'Accept': 'application/json' }
+    });
 
-    // 5. Send confirmation to client
+    // 5. Send EmailJS confirmation
     await sendClientEmail(name, email);
 
-    statusDiv.innerHTML = '<p class="success">Review submitted! Check your email.</p>';
-    setTimeout(closeModal, 2000);
+    statusDiv.innerHTML = '<p class="success">Review submitted! Thank you.</p>';
+    setTimeout(closeModal, 1800);
   } catch (err) {
-    console.error(err);
+    console.error("Submit error:", err);
     statusDiv.innerHTML = `<p class="error">Error: ${err.message}</p>`;
   } finally {
     submitBtn.disabled = false;
