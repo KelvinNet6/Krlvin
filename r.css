@@ -135,19 +135,21 @@
     .reply-form input, .reply-form textarea { margin-bottom: 0.75rem; width: 100%; }
 
     /* Modal */
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0; right: 0; bottom: 0;
-      background: rgba(0,0,0,0.7);
-      backdrop-filter: blur(5px);
-      align-items: center;
-      justify-content: center;
-      z-index: 1000;
-      padding: 1rem;
-    }
-    .modal.show { display: flex; }
-    /* MODAL CONTENT - Increase top padding to make space for close button */
+.modal {
+  display: none;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(5px);
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  padding: 1rem;
+  overflow-y: auto; /* Added to allow scrolling if modal content is tall */
+}
+.modal.show { display: flex; }
+
+/* MODAL CONTENT - Increase top padding to make space for close button */
 .modal-content {
   background: var(--card);
   border-radius: 16px;
@@ -156,6 +158,8 @@
   max-width: 500px;
   border: 1px solid var(--border);
   position: relative;
+  box-sizing: border-box; /* Added to avoid overflow issues */
+  overflow-x: hidden; /* Prevent sideways scroll */
 }
 
 /* CLOSE BUTTON - Perfect circle, no overflow */
@@ -172,7 +176,8 @@
   font-weight: 300;
   line-height: 1;
   padding: 0;
-  display: none;
+  display: block; /* Changed from none → block so it’s visible */
+  z-index: 10; /* Ensures it stays above heading and form */
 }
 
 .close-btn:hover {
@@ -185,36 +190,37 @@
   content: '×';
 }
 
-    .form-group { margin-bottom: 1.2rem; }
-    label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #cbd5e1; }
-    input, textarea, select {
-      width: 100%;
-      padding: 0.75rem;
-      background: #334155;
-      border: 1px solid var(--border);
-      border-radius: 8px;
-      color: #fff;
-      font-size: 1rem;
-    }
-    input:focus, textarea:focus, select:focus {
-      outline: none;
-      border-color: var(--accent);
-      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
-    }
-    .modal button {
-      background: var(--accent);
-      color: white;
-      border: none;
-      padding: 0.75rem 1.5rem;
-      border-radius: 8px;
-      font-weight: 600;
-      cursor: pointer;
-      width: 100%;
-      margin-top: 1rem;
-    }
-    .modal button:hover { background: var(--accent-hover); }
-    .success { color: var(--success); text-align: center; margin: 1rem 0; font-weight: 600; }
-    .error { color: var(--error); text-align: center; font-weight: 600; }
+.form-group { margin-bottom: 1.2rem; }
+label { display: block; margin-bottom: 0.5rem; font-weight: 600; color: #cbd5e1; }
+input, textarea, select {
+  width: 100%;
+  padding: 0.75rem;
+  background: #334155;
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: #fff;
+  font-size: 1rem;
+}
+input:focus, textarea:focus, select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+}
+.modal button {
+  background: var(--accent);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  width: 100%;
+  margin-top: 1rem;
+}
+.modal button:hover { background: var(--accent-hover); }
+.success { color: var(--success); text-align: center; margin: 1rem 0; font-weight: 600; }
+.error { color: var(--error); text-align: center; font-weight: 600; }
+
 .review-avatar {
   width: 40px;
   height: 40px;
@@ -234,6 +240,7 @@
   display: flex;
   flex-direction: column;
 }
+
 /* Split form into two columns */
 #reviewForm {
   display: flex;
@@ -277,10 +284,13 @@
     height: auto;
     max-height: 90vh; /* Prevent content from going off screen */
     overflow-y: auto; /* Scroll form if it's long */
-    padding: 2rem 1rem; /* Reduce side padding for smaller screens */
+    padding: 2.5rem 1rem 1.5rem; /* Adjusted padding so heading is not hidden by close button */
   }
 
   .close-btn {
     display: block; /* Show the close button on mobile */
+    top: 0.75rem;
+    right: 0.75rem;
+    font-size: 1.5rem; /* Slightly smaller for small screens */
   }
 }
