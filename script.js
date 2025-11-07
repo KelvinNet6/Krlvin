@@ -335,7 +335,7 @@ function closeModal() {
   form.reset();
   btn.disabled = true;
   status.innerHTML = '';
-  if (window.hcaptcha) hcaptcha.reset();
+  hcaptcha.reset();
   captchaToken = null;
 }
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
@@ -349,10 +349,14 @@ const esc = s => { const d = document.createElement('div'); d.textContent = s; r
 async function uploadAvatar(file, id) {
   const ext = file.name.split('.').pop().toLowerCase();
   const name = `${id}.${ext}`;
+
+  // Upload file
   const { error } = await supabase.storage.from('avatars').upload(name, file, { upsert: true });
   if (error) throw error;
-  const { publicUrl } = supabase.storage.from('avatars').getPublicUrl(name);
-  return publicUrl;
+
+  // Get public URL
+  const { data } = supabase.storage.from('avatars').getPublicUrl(name);
+  return data.publicUrl;
 }
 
 /* ==== FORMSPREE (Admin) ==== */
@@ -414,7 +418,7 @@ form.onsubmit = async e => {
     status.innerHTML = '<p class="success">Thank you! Review received.</p>';
     setTimeout(() => {
       closeModal();
-      loadReviews();
+      loadReviews(); // Refresh reviews
     }, 1800);
   } catch (err) {
     console.error('Submit error:', err);
@@ -509,7 +513,7 @@ window.submitReply = async (e, id) => {
   const name = f.querySelector('.reply-name').value.trim();
   const msg = f.querySelector('.reply-msg').value.trim();
   if (!name || !msg) return;
-  const { error } = await supabase.from('review_replies').insert({ review_id: id, name, message: msg, approved: true });
+  const { error } = await supabase.from('review_replies').insert({ review_id: id, name, message: msg, approved: false });
   if (error) alert('Error: ' + error.message);
   else { alert('Reply sent!'); f.reset(); f.parentElement.classList.remove('show'); }
 };
@@ -533,3 +537,4 @@ document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.write-btn')?.addEventListener('click', openModal);
   loadReviews();
 });
+
