@@ -215,3 +215,22 @@
     .modal button:hover { background: var(--accent-hover); }
     .success { color: var(--success); text-align: center; margin: 1rem 0; font-weight: 600; }
     .error { color: var(--error); text-align: center; font-weight: 600; }
+.review-avatar {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  object-fit: cover;
+  margin-right: 12px;
+  border: 2px solid var(--border);
+}
+
+.review-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.review-header > div {
+  display: flex;
+  flex-direction: column;
+}
