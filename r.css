@@ -135,6 +135,7 @@
     .reply-form input, .reply-form textarea { margin-bottom: 0.75rem; width: 100%; }
 
  /* Modal */
+/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -153,7 +154,7 @@
 .modal-content {
   background: var(--card);
   border-radius: 16px;
-  padding: 4rem 2rem 2rem; /* increased top padding from 3rem → 4rem */
+  padding: 5rem 2rem 2rem; /* Increased top padding so heading isn't hidden */
   width: 100%;
   max-width: 500px;
   border: 1px solid var(--border);
@@ -162,16 +163,7 @@
   overflow-x: hidden;
 }
 
-/* Ensure heading visible */
-.modal-content h1,
-.modal-content h2 {
-  margin-top: 0;
-  text-align: center;
-  position: relative;
-  z-index: 1;
-}
-
-/* CLOSE BUTTON - fixed width + proper placement */
+/* CLOSE BUTTON - Perfect circle, no overflow */
 .close-btn {
   position: absolute;
   top: 1rem;
@@ -181,19 +173,20 @@
   color: #94a3b8;
   font-size: 1.75rem;
   cursor: pointer;
-  transition: all 0.2s ease;
+  transition: none; /* removed hover animation */
   font-weight: 300;
   line-height: 1;
   padding: 0;
-  width: auto; /* Added to prevent taking full width */
-  height: auto; /* Just in case */
-  display: block; /* Always visible */
-  z-index: 10; /* Above heading */
+  width: auto; /* prevents stretching */
+  height: auto;
+  display: block;
+  z-index: 10; /* keeps button above all content */
 }
 
+/* removed hover rotation and color change */
 .close-btn:hover {
-  color: #fff;
-  transform: rotate(90deg);
+  color: #94a3b8;
+  transform: none;
 }
 
 /* Optional: Use × symbol without text inside */
@@ -295,7 +288,7 @@ input:focus, textarea:focus, select:focus {
     height: auto;
     max-height: 90vh; /* Prevent content from going off screen */
     overflow-y: auto; /* Scroll form if it's long */
-    padding: 3.5rem 1rem 1.5rem; /* Slightly more top padding for close button */
+    padding: 4.5rem 1rem 1.5rem; /* More top padding for heading visibility */
   }
 
   .close-btn {
@@ -303,6 +296,6 @@ input:focus, textarea:focus, select:focus {
     top: 0.75rem;
     right: 0.75rem;
     font-size: 1.5rem;
-    width: auto; /* prevent full width on mobile */
+    width: auto;
   }
 }
