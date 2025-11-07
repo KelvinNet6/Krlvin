@@ -262,3 +262,25 @@
 .form-right .form-group {
   margin-bottom: 1rem;
 }
+
+/* Ensure modal content fits on smaller screens */
+@media (max-width: 640px) {
+  .modal {
+    align-items: flex-start; /* Top align modal so users can scroll */
+    padding: 1rem;
+    overflow-y: auto; /* Allow scrolling inside modal */
+  }
+
+  .modal-content {
+    width: 100%;
+    max-width: 100%;
+    height: auto;
+    max-height: 90vh; /* Prevent content from going off screen */
+    overflow-y: auto; /* Scroll form if it's long */
+    padding: 2rem 1rem; /* Reduce side padding for smaller screens */
+  }
+
+  .close-btn {
+    display: block; /* Show the close button on mobile */
+  }
+}
