@@ -311,6 +311,10 @@ function getServiceName(code) {
 const SUPABASE_URL = 'https://rrvrtbaiuspojtunkuxr.supabase.co';
 const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InJydnJ0YmFpdXNwb2p0dW5rdXhyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjIxNDgzODksImV4cCI6MjA3NzcyNDM4OX0.qHQcbRA_F9_NtoFbIlNuwnCKev_Dc2Eu-xtKcZK3WdI';
 const FORMSPREE_URL = 'https://formspree.io/f/xqagoldw';
+const EMAILJS_PUBLIC_KEY = '2ahNZz2uLYhQWjryo';   
+const EMAILJS_SERVICE_ID = 'service_xn1q9x6';  
+const EMAILJS_TEMPLATE_ID = 'template_hpkihwk'; 
+
 const supabase = window.supabase.createClient?.(SUPABASE_URL, SUPABASE_ANON_KEY) || supabase;
 
 let captchaToken = null;
@@ -358,6 +362,27 @@ async function uploadAvatar(file, reviewId) {
   return data.publicUrl;
 }
 
+/* ==== SEND TO FORMSPREE (YOU GET NOTIFIED) ==== */
+async function sendToFormspree(formData) {
+  await fetch(FORMSPREE_URL, {
+    method: 'POST',
+    body: formData,
+    headers: { 'Accept': 'application/json' }
+  });
+}
+
+/* ==== SEND CONFIRMATION TO CLIENT via EmailJS ==== */
+async function sendClientEmail(name, email) {
+  const params = { name, to_email: email };
+  const result = await emailjs.send(
+    EMAILJS_SERVICE_ID,
+    EMAILJS_TEMPLATE_ID,
+    params,
+    EMAILJS_PUBLIC_KEY
+  );
+  if (result.status !== 200) throw new Error('EmailJS failed');
+}
+
 /* ==== SUBMIT REVIEW ==== */
 reviewForm.onsubmit = async e => {
   e.preventDefault();
@@ -367,7 +392,7 @@ reviewForm.onsubmit = async e => {
   }
 
   submitBtn.disabled = true;
-  submitBtn.textContent = 'Uploading...';
+  submitBtn.textContent = 'Uploading…';
 
   const name = document.getElementById('name').value.trim();
   const email = document.getElementById('email').value.trim();
@@ -383,52 +408,37 @@ reviewForm.onsubmit = async e => {
     return;
   }
   if (avatarFile.size > 2 * 1024 * 1024) {
-    statusDiv.innerHTML = '<p class="error">Image must be under 2MB.</p>';
+    statusDiv.innerHTML = '<p class="error">Image must be under 2 MB.</p>';
     submitBtn.disabled = false;
     submitBtn.textContent = 'Submit Review';
     return;
   }
 
   try {
-    // 1. Insert review (get ID)
-    const { data: [review], error: insertError } = await supabase
+    // 1. Insert review
+    const { data: [review], error: insErr } = await supabase
       .from('reviews')
       .insert({ name, email, rating, message, approved: false, likes: 0 })
       .select();
-
-    if (insertError) throw insertError;
+    if (insErr) throw insErr;
 
     // 2. Upload avatar
     const avatarUrl = await uploadAvatar(avatarFile, review.id);
 
-    // 3. Update review with avatar URL
-    const { error: updateError } = await supabase
+    // 3. Update with avatar
+    const { error: updErr } = await supabase
       .from('reviews')
       .update({ avatar_url: avatarUrl })
       .eq('id', review.id);
+    if (updErr) throw updErr;
 
-    if (updateError) throw updateError;
+    // 4. Send to Formspree (you get notified)
+    const formData = new FormData(e.target);
+    formData.append('_subject', 'New Review Awaiting Approval');
+    await sendToFormspree(formData);
 
-    // 4. Send confirmation email via Formspree
-    const formData = new FormData();
-    formData.append('_replyto', email);
-    formData.append('_subject', 'Your Review is Pending Approval');
-    formData.append('message', `
-      Hi ${name},
-
-      Thank you for your review on krlvin.net!
-
-      Your review has been submitted and is awaiting moderation.
-      We'll notify you once it's live.
-
-      — The krlvin.net Team
-    `);
-
-    await fetch(FORMSPREE_URL, {
-      method: 'POST',
-      body: formData,
-      headers: { 'Accept': 'application/json' }
-    });
+    // 5. Send confirmation to client
+    await sendClientEmail(name, email);
 
     statusDiv.innerHTML = '<p class="success">Review submitted! Check your email.</p>';
     setTimeout(closeModal, 2000);
@@ -442,7 +452,7 @@ reviewForm.onsubmit = async e => {
   }
 };
 
-/* ==== LOAD REVIEWS (with avatar) ==== */
+/* ==== LOAD REVIEWS, LIKE, REPLY, REALTIME (unchanged) ==== */
 async function loadReviews() {
   const { data: reviews, error } = await supabase
     .from('reviews')
@@ -461,9 +471,8 @@ async function loadReviews() {
     return `
       <div class="review" data-id="${r.id}">
         <div class="review-header">
-          <img src="${r.avatar_url || 'https://via.placeholder.com/40'}" 
-               alt="${escape(r.name)}" 
-               class="review-avatar">
+          <img src="${r.avatar_url || 'https://via.placeholder.com/40?text=?'}" 
+               alt="${escape(r.name)}" class="review-avatar">
           <div>
             <strong>${escape(r.name)}</strong>
             <span class="rating">${stars(r.rating)}</span>
@@ -478,20 +487,19 @@ async function loadReviews() {
         </div>
         <div class="reply-form" id="form-${r.id}"></div>
         <div class="replies">
-          ${ (r.review_replies || [])
-              .filter(rep => rep.approved)
-              .map(rep => `
-                <div class="reply">
-                  <strong>${escape(rep.name)}</strong>
-                  <small>${new Date(rep.created_at).toLocaleDateString()}</small><br>
-                  ${escape(rep.message)}
-                </div>`).join('') }
+          ${(r.review_replies || [])
+            .filter(rep => rep.approved)
+            .map(rep => `
+              <div class="reply">
+                <strong>${escape(rep.name)}</strong>
+                <small>${new Date(rep.created_at).toLocaleDateString()}</small><br>
+                ${escape(rep.message)}
+              </div>`).join('')}
         </div>
       </div>`;
   }).join('');
 }
 
-/* ==== LIKE, REPLY, REALTIME (unchanged) ==== */
 window.likeReview = async (reviewId, btn) => { /* ... same as before ... */ };
 window.toggleReplyForm = id => { /* ... same ... */ };
 window.submitReply = async (e, reviewId) => { /* ... same ... */ };
@@ -506,7 +514,6 @@ const channel = supabase
 
 window.addEventListener('beforeunload', () => supabase.removeChannel(channel));
 
-/* ==== INIT ==== */
 document.addEventListener('DOMContentLoaded', () => {
   document.querySelector('.write-btn').addEventListener('click', openModal);
   loadReviews();
