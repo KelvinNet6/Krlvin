@@ -134,7 +134,7 @@
     .reply-form.show { display: block; }
     .reply-form input, .reply-form textarea { margin-bottom: 0.75rem; width: 100%; }
 
-    /* Modal */
+ /* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -145,7 +145,7 @@
   justify-content: center;
   z-index: 1000;
   padding: 1rem;
-  overflow-y: auto; /* Added to allow scrolling if modal content is tall */
+  overflow-y: auto; /* Allow scrolling if modal content is tall */
 }
 .modal.show { display: flex; }
 
@@ -153,16 +153,25 @@
 .modal-content {
   background: var(--card);
   border-radius: 16px;
-  padding: 3rem 2rem 2rem; /* top: 3rem, sides: 2rem, bottom: 2rem */
+  padding: 4rem 2rem 2rem; /* increased top padding from 3rem → 4rem */
   width: 100%;
   max-width: 500px;
   border: 1px solid var(--border);
   position: relative;
-  box-sizing: border-box; /* Added to avoid overflow issues */
-  overflow-x: hidden; /* Prevent sideways scroll */
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
-/* CLOSE BUTTON - Perfect circle, no overflow */
+/* Ensure heading visible */
+.modal-content h1,
+.modal-content h2 {
+  margin-top: 0;
+  text-align: center;
+  position: relative;
+  z-index: 1;
+}
+
+/* CLOSE BUTTON - fixed width + proper placement */
 .close-btn {
   position: absolute;
   top: 1rem;
@@ -176,8 +185,10 @@
   font-weight: 300;
   line-height: 1;
   padding: 0;
-  display: block; /* Changed from none → block so it’s visible */
-  z-index: 10; /* Ensures it stays above heading and form */
+  width: auto; /* Added to prevent taking full width */
+  height: auto; /* Just in case */
+  display: block; /* Always visible */
+  z-index: 10; /* Above heading */
 }
 
 .close-btn:hover {
@@ -284,13 +295,14 @@ input:focus, textarea:focus, select:focus {
     height: auto;
     max-height: 90vh; /* Prevent content from going off screen */
     overflow-y: auto; /* Scroll form if it's long */
-    padding: 2.5rem 1rem 1.5rem; /* Adjusted padding so heading is not hidden by close button */
+    padding: 3.5rem 1rem 1.5rem; /* Slightly more top padding for close button */
   }
 
   .close-btn {
     display: block; /* Show the close button on mobile */
     top: 0.75rem;
     right: 0.75rem;
-    font-size: 1.5rem; /* Slightly smaller for small screens */
+    font-size: 1.5rem;
+    width: auto; /* prevent full width on mobile */
   }
 }
