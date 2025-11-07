@@ -307,6 +307,7 @@ function getServiceName(code) {
     // Final scroll check
     setTimeout(setActiveLinkOnScroll, 500);
 });
+
 emailjs.init('2ahNZz2uLYhQWjryo');
 
 /* ==== CONFIG ==== */
@@ -334,7 +335,7 @@ function closeModal() {
   form.reset();
   btn.disabled = true;
   status.innerHTML = '';
-  hcaptcha.reset();
+  if (window.hcaptcha) hcaptcha.reset();
   captchaToken = null;
 }
 modal.addEventListener('click', e => { if (e.target === modal) closeModal(); });
@@ -350,8 +351,8 @@ async function uploadAvatar(file, id) {
   const name = `${id}.${ext}`;
   const { error } = await supabase.storage.from('avatars').upload(name, file, { upsert: true });
   if (error) throw error;
-  const { data } = supabase.storage.from('avatars').getPublicUrl(name);
-  return data.publicUrl;
+  const { publicUrl } = supabase.storage.from('avatars').getPublicUrl(name);
+  return publicUrl;
 }
 
 /* ==== FORMSPREE (Admin) ==== */
@@ -413,7 +414,7 @@ form.onsubmit = async e => {
     status.innerHTML = '<p class="success">Thank you! Review received.</p>';
     setTimeout(() => {
       closeModal();
-      loadReviews(); // Refresh to show new review (if approved later)
+      loadReviews();
     }, 1800);
   } catch (err) {
     console.error('Submit error:', err);
@@ -425,7 +426,7 @@ form.onsubmit = async e => {
   }
 };
 
-/* ==== LOAD REVIEWS – AVATAR FIXED ==== */
+/* ==== LOAD REVIEWS ==== */
 async function loadReviews() {
   const { data: reviews } = await supabase
     .from('reviews')
