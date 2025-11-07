@@ -307,8 +307,7 @@ function getServiceName(code) {
     // Final scroll check
     setTimeout(setActiveLinkOnScroll, 500);
 });
-// Initialise EmailJS
-  emailjs.init('2ahNZz2uLYhQWjryo');
+emailjs.init('2ahNZz2uLYhQWjryo');
 
 /* ==== CONFIG ==== */
 const SUPABASE_URL = 'https://rrvrtbaiuspojtunkuxr.supabase.co';
@@ -345,27 +344,28 @@ document.querySelector('.close-btn')?.addEventListener('click', closeModal);
 const stars = n => '★★★★★'.slice(0,n) + '☆☆☆☆☆'.slice(n);
 const esc = s => { const d = document.createElement('div'); d.textContent = s; return d.innerHTML; };
 
-/* ==== AVATAR ==== */
+/* ==== AVATAR UPLOAD ==== */
 async function uploadAvatar(file, id) {
   const ext = file.name.split('.').pop().toLowerCase();
   const name = `${id}.${ext}`;
   const { error } = await supabase.storage.from('avatars').upload(name, file, { upsert: true });
   if (error) throw error;
-  return supabase.storage.from('avatars').getPublicUrl(name).data.publicUrl;
+  const { data } = supabase.storage.from('avatars').getPublicUrl(name);
+  return data.publicUrl;
 }
 
-/* ==== FORMSPREE ==== */
+/* ==== FORMSPREE (Admin) ==== */
 async function sendAdminEmail(fd) {
   await fetch(FORMSPREE_URL, { method: 'POST', body: fd, headers: { 'Accept': 'application/json' } });
 }
 
-/* ==== EMAILJS ==== */
+/* ==== EMAILJS (Client) ==== */
 async function sendClientEmail(name, email) {
   const res = await emailjs.send(EMAILJS_SERVICE_ID, EMAILJS_TEMPLATE_ID, { name, to_email: email });
   if (res.status !== 200) throw new Error('Email failed');
 }
 
-/* ==== SUBMIT ==== */
+/* ==== SUBMIT REVIEW ==== */
 form.onsubmit = async e => {
   e.preventDefault();
   if (!captchaToken) { status.innerHTML = '<p class="error">Complete CAPTCHA.</p>'; return; }
@@ -379,10 +379,11 @@ form.onsubmit = async e => {
   const message = document.getElementById('message').value.trim();
   const file = document.getElementById('avatar').files[0];
 
-  if (!file) { status.innerHTML = '<p class="error">Upload picture.</p>'; btn.disabled = false; btn.textContent = 'Submit Review'; return; }
+  if (!file) { status.innerHTML = '<p class="error">Upload a picture.</p>'; btn.disabled = false; btn.textContent = 'Submit Review'; return; }
   if (file.size > 2*1024*1024) { status.innerHTML = '<p class="error">Image ≤ 2 MB.</p>'; btn.disabled = false; btn.textContent = 'Submit Review'; return; }
 
   try {
+    // 1. Insert review
     const { data, error: insErr } = await supabase
       .from('reviews')
       .insert({ name, email, rating, message, approved: false, likes: 0 })
@@ -391,20 +392,32 @@ form.onsubmit = async e => {
     if (!data?.[0]) throw new Error('Failed to create review');
     const review = data[0];
 
+    // 2. Upload avatar
     const avatarUrl = await uploadAvatar(file, review.id);
-    await supabase.from('reviews').update({ avatar_url: avatarUrl }).eq('id', review.id);
 
+    // 3. Save avatar URL
+    const { error: updErr } = await supabase
+      .from('reviews')
+      .update({ avatar_url: avatarUrl })
+      .eq('id', review.id);
+    if (updErr) throw updErr;
+
+    // 4. Notify admin
     const fd = new FormData(e.target);
     fd.append('_subject', 'New Review');
     await sendAdminEmail(fd);
 
+    // 5. Thank client
     await sendClientEmail(name, email);
 
     status.innerHTML = '<p class="success">Thank you! Review received.</p>';
-    setTimeout(closeModal, 1800);
+    setTimeout(() => {
+      closeModal();
+      loadReviews(); // Refresh to show new review (if approved later)
+    }, 1800);
   } catch (err) {
-    console.error(err);
-    status.innerHTML = `<p class="error">${err.message}</p>`;
+    console.error('Submit error:', err);
+    status.innerHTML = `<p class="error">${err.message || 'Something went wrong'}</p>`;
   } finally {
     btn.disabled = false;
     btn.textContent = 'Submit Review';
@@ -412,7 +425,7 @@ form.onsubmit = async e => {
   }
 };
 
-/* ==== LOAD REVIEWS ==== */
+/* ==== LOAD REVIEWS – AVATAR FIXED ==== */
 async function loadReviews() {
   const { data: reviews } = await supabase
     .from('reviews')
@@ -428,10 +441,15 @@ async function loadReviews() {
 
   container.innerHTML = reviews.map(r => {
     const likes = r.likes ?? 0;
+    const avatar = r.avatar_url || 'https://via.placeholder.com/40?text=?';
+
     return `
       <div class="review" data-id="${r.id}">
         <div class="review-header">
-          <img src="${r.avatar_url || 'https://via.placeholder.com/40?text=?'}" alt="${esc(r.name)}" class="review-avatar">
+          <img src="${avatar}" 
+               alt="${esc(r.name)}" 
+               class="review-avatar"
+               onerror="this.src='https://via.placeholder.com/40?text=?'">
           <div>
             <strong>${esc(r.name)}</strong>
             <span class="rating">${stars(r.rating)}</span>
@@ -490,7 +508,7 @@ window.submitReply = async (e, id) => {
   const name = f.querySelector('.reply-name').value.trim();
   const msg = f.querySelector('.reply-msg').value.trim();
   if (!name || !msg) return;
-  const { error } = await supabase.from('review_replies').insert({ review_id: id, name, message: msg, approved: true });
+  const { error } = await supabase.from('review_replies').insert({ review_id: id, name, message: msg, approved: false });
   if (error) alert('Error: ' + error.message);
   else { alert('Reply sent!'); f.reset(); f.parentElement.classList.remove('show'); }
 };
