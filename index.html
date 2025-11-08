@@ -187,27 +187,22 @@ I believe great software starts with understanding people—then making technolo
       <span>AsyncIO</span>
     </div>
 
-    <!-- Button -->
+    <!-- ✅ Single view image button -->
     <div class="project-actions">
-      <button class="btn btn-view-image" id="openImageBtn">
-       View Snip
+      <button id="openImageBtn" class="btn btn-view-image"
+        data-image="https://example.com/path/to/your-image.jpg">
+        View image
       </button>
     </div>
   </div>
 </div>
 
-<!-- Modal -->
+<!-- ✅ Modal -->
 <div id="imageModal" class="image-modal" aria-hidden="true">
   <div id="modalBackdrop" class="image-modal-backdrop"></div>
   <div class="image-modal-content">
     <button id="closeModalBtn" class="image-modal-close">&times;</button>
-    <!-- ✅ Use src directly -->
-    <img
-      id="modalImg"
-      src="https://example.com/path/to/your-image.jpg"
-      alt="Project preview image"
-      loading="lazy"
-    >
+    <img id="modalImg" src="" alt="Project preview image" loading="lazy">
   </div>
 </div>
                     <div class="project-card">
