@@ -524,6 +524,54 @@ I believe great software starts with understanding people—then making technolo
   </div>
 </div>
 <script>
+
+    document.addEventListener("DOMContentLoaded", () => {
+  const openBtn = document.getElementById("openImageBtn");
+  const modal = document.getElementById("imageModal");
+  const modalImg = document.getElementById("modalImg");
+  const closeBtn = document.getElementById("closeModalBtn");
+  const backdrop = document.getElementById("modalBackdrop");
+
+  if (!openBtn || !modal || !modalImg) return;
+
+  function openModal() {
+    const imgSrc = openBtn.dataset.image;
+    modalImg.src = imgSrc;
+    modal.setAttribute("aria-hidden", "false");
+    document.body.style.overflow = "hidden";
+  }
+
+  function closeModal() {
+    modal.setAttribute("aria-hidden", "true");
+    modalImg.src = "";
+    document.body.style.overflow = "";
+  }
+
+  openBtn.addEventListener("click", openModal);
+  closeBtn.addEventListener("click", closeModal);
+  backdrop.addEventListener("click", closeModal);
+
+  // Close with ESC key
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && modal.getAttribute("aria-hidden") === "false") {
+      closeModal();
+    }
+  });
+
+  // Optional zoom toggle
+  modalImg.addEventListener("click", () => {
+    modalImg.classList.toggle("zoomed");
+    if (modalImg.classList.contains("zoomed")) {
+      modalImg.style.transform = "scale(1.4)";
+      modalImg.style.cursor = "zoom-out";
+    } else {
+      modalImg.style.transform = "scale(1)";
+      modalImg.style.cursor = "zoom-in";
+    }
+  });
+});
+
+    
 (function(){
   // Configuration
   const cookieName = 'site_cookie_consent';
