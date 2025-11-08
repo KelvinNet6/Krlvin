@@ -565,50 +565,44 @@ document.addEventListener('DOMContentLoaded', () => {
   const modalImg = document.getElementById('modalImg');
   const closeBtn = document.getElementById('closeModalBtn');
   const backdrop = document.getElementById('modalBackdrop');
-  const openInNewTab = document.getElementById('openInNewTab');
 
-  if (!openBtn || !modal || !modalImg || !closeBtn || !backdrop) return;
+  if (!openBtn || !modal || !modalImg) return;
 
-  function openModal(imgUrl){
-    modalImg.src = imgUrl;
-    openInNewTab.href = imgUrl;
+  function openModal() {
     modal.setAttribute('aria-hidden', 'false');
-    closeBtn.focus();
     document.body.style.overflow = 'hidden';
+    closeBtn.focus();
   }
 
-  function closeModal(){
+  function closeModal() {
     modal.setAttribute('aria-hidden', 'true');
-    modalImg.src = '';
     document.body.style.overflow = '';
     openBtn.focus();
   }
 
-  openBtn.addEventListener('click', function(){
-    const url = this.dataset.image;
-    openModal(url);
-  });
-
+  openBtn.addEventListener('click', openModal);
   closeBtn.addEventListener('click', closeModal);
   backdrop.addEventListener('click', closeModal);
 
-  // keyboard support
-  document.addEventListener('keydown', function(e){
+  // ESC key closes modal
+  document.addEventListener('keydown', e => {
     if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
       e.preventDefault();
       closeModal();
     }
   });
 
-  // optional: click image to zoom
-  modalImg.addEventListener('click', function(){
-    this.classList.toggle('zoomed');
-    if (this.classList.contains('zoomed')) {
-      this.style.maxHeight = 'none';
-      this.style.maxWidth = 'none';
+  // Optional zoom on image click
+  modalImg.addEventListener('click', () => {
+    modalImg.classList.toggle('zoomed');
+    if (modalImg.classList.contains('zoomed')) {
+      modalImg.style.maxWidth = 'none';
+      modalImg.style.maxHeight = 'none';
+      modalImg.style.cursor = 'zoom-out';
     } else {
-      this.style.maxHeight = '';
-      this.style.maxWidth = '';
+      modalImg.style.maxWidth = '';
+      modalImg.style.maxHeight = '';
+      modalImg.style.cursor = 'zoom-in';
     }
   });
 });
