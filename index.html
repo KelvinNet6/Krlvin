@@ -187,22 +187,27 @@ I believe great software starts with understanding people—then making technolo
       <span>AsyncIO</span>
     </div>
 
-    <!-- Button that opens modal -->
+    <!-- Button -->
     <div class="project-actions">
-      <button class="btn btn-view-image" id="openImageBtn" data-image="scanner.png" aria-haspopup="dialog">
+      <button class="btn btn-view-image" id="openImageBtn">
         View image
       </button>
     </div>
   </div>
 </div>
 
-<!-- Modal markup (placed near end of body) -->
-<div id="imageModal" class="image-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Project image preview">
-  <div class="image-modal-backdrop" id="modalBackdrop"></div>
-  <div class="image-modal-content" role="document">
-    <button class="image-modal-close" id="closeModalBtn" aria-label="Close preview">&times;</button>
-    <img id="modalImg" src="" alt="Project preview image">
-    <a id="openInNewTab" class="open-new-tab" href="#" target="_blank" rel="noopener noreferrer">Open in new tab</a>
+<!-- Modal -->
+<div id="imageModal" class="image-modal" aria-hidden="true">
+  <div id="modalBackdrop" class="image-modal-backdrop"></div>
+  <div class="image-modal-content">
+    <button id="closeModalBtn" class="image-modal-close">&times;</button>
+    <!-- ✅ Use src directly -->
+    <img
+      id="modalImg"
+      src="https://example.com/path/to/your-image.jpg"
+      alt="Project preview image"
+      loading="lazy"
+    >
   </div>
 </div>
                     <div class="project-card">
