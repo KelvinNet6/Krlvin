@@ -559,4 +559,53 @@ document.addEventListener('DOMContentLoaded', () => {
   loadReviews();
 });
 
+(function(){
+    const openBtn = document.getElementById('openImageBtn');
+    const modal = document.getElementById('imageModal');
+    const modalImg = document.getElementById('modalImg');
+    const closeBtn = document.getElementById('closeModalBtn');
+    const backdrop = document.getElementById('modalBackdrop');
+    const openInNewTab = document.getElementById('openInNewTab');
 
+    function openModal(imgUrl){
+      modalImg.src = imgUrl;
+      openInNewTab.href = imgUrl;
+      modal.setAttribute('aria-hidden', 'false');
+      // trap focus: move focus to close button
+      closeBtn.focus();
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(){
+      modal.setAttribute('aria-hidden', 'true');
+      modalImg.src = '';
+      document.body.style.overflow = '';
+      openBtn.focus();
+    }
+
+    openBtn.addEventListener('click', function(){
+      const url = this.dataset.image;
+      openModal(url);
+    });
+    closeBtn.addEventListener('click', closeModal);
+    backdrop.addEventListener('click', closeModal);
+
+    // keyboard support
+    document.addEventListener('keydown', function(e){
+      if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
+        e.preventDefault();
+        closeModal();
+      }
+    });
+
+    // optional: allow clicking image to zoom (toggle class)
+    modalImg.addEventListener('click', function(){
+      this.classList.toggle('zoomed');
+      if (this.classList.contains('zoomed')) {
+        this.style.maxHeight = 'none';
+        this.style.maxWidth = 'none';
+      } else {
+        this.style.maxHeight = '';
+        this.style.maxWidth = '';
+      }
+    });
+  })();
