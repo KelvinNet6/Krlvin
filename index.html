@@ -187,24 +187,22 @@ I believe great software starts with understanding people—then making technolo
       <span>AsyncIO</span>
     </div>
 
-    <!-- ✅ Single view image button -->
-    <div class="project-actions">
-      <button id="openImageBtn" class="btn btn-view-image"
-        data-image="https://github.com/KelvinNet6/Krlvin/blob/main/scanner.png">
-        View image
-      </button>
-    </div>
+    <!-- ✅ Single "View Image" button -->
+    <button id="openImageBtn" class="btn" data-image="scanner.png">
+      View Image
+    </button>
   </div>
 </div>
 
-<!-- ✅ Modal -->
+<!-- ✅ Modal (place near end of body) -->
 <div id="imageModal" class="image-modal" aria-hidden="true">
   <div id="modalBackdrop" class="image-modal-backdrop"></div>
   <div class="image-modal-content">
     <button id="closeModalBtn" class="image-modal-close">&times;</button>
-    <img id="modalImg" src="" alt="Project preview image" loading="lazy">
+    <img id="modalImg" src="" alt="Project Image" loading="lazy">
   </div>
 </div>
+
                     <div class="project-card">
                         <div class="project-content">
                             <h3>Mobile CarWash Website</h3>
