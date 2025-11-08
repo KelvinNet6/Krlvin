@@ -538,66 +538,39 @@ window.submitReply = async (e, id) => {
   if (error) alert('Error: ' + error.message);
   else { alert('Reply sent!'); f.reset(); f.parentElement.classList.remove('show'); }
 };
-
 /* ==== REALTIME ==== */
-supabase.channel('public')
-  .on('postgres_changes', { event: 'UPDATE', schema: 'public', table: 'reviews' }, p => {
-    const el = document.querySelector(`[data-id="${p.new.id}"] .like-count`);
-    if (el) el.textContent = p.new.likes ?? 0;
-  })
-  .on('postgres_changes', { event: 'INSERT', schema: 'public', table: 'review_replies' }, p => {
-    if (!p.new.approved) return;
-    const c = document.querySelector(`[data-id="${p.new.review_id}"] .replies`);
-    if (c) c.insertAdjacentHTML('beforeend', `<div class="reply"><strong>${esc(p.new.name)}</strong>
-      <small>${new Date(p.new.created_at).toLocaleDateString()}</small><br>${esc(p.new.message)}</div>`);
-  })
+supabase
+  .channel('public')
+  .on(
+    'postgres_changes',
+    { event: 'UPDATE', schema: 'public', table: 'reviews' },
+    p => {
+      const el = document.querySelector(`[data-id="${p.new.id}"] .like-count`);
+      if (el) el.textContent = p.new.likes ?? 0;
+    }
+  )
+  .on(
+    'postgres_changes',
+    { event: 'INSERT', schema: 'public', table: 'review_replies' },
+    p => {
+      if (!p.new.approved) return;
+      const c = document.querySelector(`[data-id="${p.new.review_id}"] .replies`);
+      if (c)
+        c.insertAdjacentHTML(
+          'beforeend',
+          `<div class="reply">
+            <strong>${esc(p.new.name)}</strong>
+            <small>${new Date(p.new.created_at).toLocaleDateString()}</small><br>
+            ${esc(p.new.message)}
+          </div>`
+        );
+    }
+  )
   .subscribe();
 
+/* ==== INIT ==== */
 document.addEventListener('DOMContentLoaded', () => {
-  const openBtn = document.getElementById('openImageBtn');
-  const modal = document.getElementById('imageModal');
-  const modalImg = document.getElementById('modalImg');
-  const closeBtn = document.getElementById('closeModalBtn');
-  const backdrop = document.getElementById('modalBackdrop');
-
-  if (!openBtn || !modal || !modalImg) return;
-
-  function openModal() {
-    const imgUrl = openBtn.dataset.image;
-    modalImg.src = imgUrl; // ✅ Load image directly from button’s data attribute
-    modal.setAttribute('aria-hidden', 'false');
-    document.body.style.overflow = 'hidden';
-    closeBtn.focus();
-  }
-
-  function closeModal() {
-    modal.setAttribute('aria-hidden', 'true');
-    modalImg.src = ''; // clear image
-    document.body.style.overflow = '';
-    openBtn.focus();
-  }
-
-  openBtn.addEventListener('click', openModal);
-  closeBtn.addEventListener('click', closeModal);
-  backdrop.addEventListener('click', closeModal);
-
-  document.addEventListener('keydown', e => {
-    if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
-      e.preventDefault();
-      closeModal();
-    }
-  });
-
-  modalImg.addEventListener('click', () => {
-    modalImg.classList.toggle('zoomed');
-    if (modalImg.classList.contains('zoomed')) {
-      modalImg.style.maxWidth = 'none';
-      modalImg.style.maxHeight = 'none';
-      modalImg.style.cursor = 'zoom-out';
-    } else {
-      modalImg.style.maxWidth = '';
-      modalImg.style.maxHeight = '';
-      modalImg.style.cursor = 'zoom-in';
-    }
-  });
+  document.querySelector('.write-btn')?.addEventListener('click', openModal);
+  loadReviews();
 });
+
