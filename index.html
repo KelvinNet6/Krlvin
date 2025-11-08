@@ -175,18 +175,35 @@ I believe great software starts with understanding people—then making technolo
     </div>
 </div>
 <div class="project-card">
-    <div class="project-content">
-        <h3>Custom Python Pentesting Suite</h3>
-        <p>Production-grade custom Python toolkit for automated vulnerability scanning, penetration testing, load testing, real-time monitoring, and enumeration.</p>
-        
-        <div class="project-tech">
-            <span><i class="fab fa-python"></i> Python</span>
-            <span>Nmap</span>
-            <span>Scapy</span>
-            <span>CVE/NVD Lookup</span>
-            <span>AsyncIO</span>
-        </div>
+  <div class="project-content">
+    <h3>Custom Python Pentesting Suite</h3>
+    <p>Production-grade custom Python toolkit for automated vulnerability scanning, penetration testing, load testing, real-time monitoring, and enumeration.</p>
+
+    <div class="project-tech">
+      <span><i class="fab fa-python"></i> Python</span>
+      <span>Nmap</span>
+      <span>Scapy</span>
+      <span>CVE/NVD Lookup</span>
+      <span>AsyncIO</span>
     </div>
+
+    <!-- Button that opens modal -->
+    <div class="project-actions">
+      <button class="btn btn-view-image" id="openImageBtn" data-image="https://example.com/path/to/image.jpg" aria-haspopup="dialog">
+        View image
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- Modal markup (placed near end of body) -->
+<div id="imageModal" class="image-modal" role="dialog" aria-modal="true" aria-hidden="true" aria-label="Project image preview">
+  <div class="image-modal-backdrop" id="modalBackdrop"></div>
+  <div class="image-modal-content" role="document">
+    <button class="image-modal-close" id="closeModalBtn" aria-label="Close preview">&times;</button>
+    <img id="modalImg" src="" alt="Project preview image">
+    <a id="openInNewTab" class="open-new-tab" href="#" target="_blank" rel="noopener noreferrer">Open in new tab</a>
+  </div>
 </div>
                     <div class="project-card">
                         <div class="project-content">
