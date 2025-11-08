@@ -553,12 +553,6 @@ supabase.channel('public')
   })
   .subscribe();
 
-/* ==== INIT ==== */
-document.addEventListener('DOMContentLoaded', () => {
-  document.querySelector('.write-btn')?.addEventListener('click', openModal);
-  loadReviews();
-});
-
 document.addEventListener('DOMContentLoaded', () => {
   const openBtn = document.getElementById('openImageBtn');
   const modal = document.getElementById('imageModal');
@@ -569,6 +563,8 @@ document.addEventListener('DOMContentLoaded', () => {
   if (!openBtn || !modal || !modalImg) return;
 
   function openModal() {
+    const imgUrl = openBtn.dataset.image;
+    modalImg.src = imgUrl; // ✅ Load image directly from button’s data attribute
     modal.setAttribute('aria-hidden', 'false');
     document.body.style.overflow = 'hidden';
     closeBtn.focus();
@@ -576,6 +572,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   function closeModal() {
     modal.setAttribute('aria-hidden', 'true');
+    modalImg.src = ''; // clear image
     document.body.style.overflow = '';
     openBtn.focus();
   }
@@ -584,7 +581,6 @@ document.addEventListener('DOMContentLoaded', () => {
   closeBtn.addEventListener('click', closeModal);
   backdrop.addEventListener('click', closeModal);
 
-  // ESC key closes modal
   document.addEventListener('keydown', e => {
     if (modal.getAttribute('aria-hidden') === 'false' && e.key === 'Escape') {
       e.preventDefault();
@@ -592,7 +588,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
   });
 
-  // Optional zoom on image click
   modalImg.addEventListener('click', () => {
     modalImg.classList.toggle('zoomed');
     if (modalImg.classList.contains('zoomed')) {
